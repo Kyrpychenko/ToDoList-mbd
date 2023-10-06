@@ -1,66 +1,115 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# TODOLIST
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+this repo is the base for the TODOLIST API and the TODOLIST web app
 
-## About Laravel
+technologies used:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+-   PHP 8.0
+-   Laravel 8
+-   PHP Unit 9
+-   Laravel Mix 6
+-   Vue 3
+-   Bootstrap 5
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Getting Started
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Prerequisites:
 
-## Learning Laravel
+-   VS Code
+-   Docker
+-   VS Code "Remote - Containers" extension
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+This repo utilizes VS Code dev containers to quickstart an dev environment, to start developing clone this repo using (current dev branch is wip-L8)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```bash
+git clone -b wip-L8 https://github.com/Kyrpychenko/ToDoList-mbd.git
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+or alternatively, if that fails with some sort of "access denied" or "not found" (also see Known Errors/Bugs, GitHub Authetification)
 
-## Laravel Sponsors
+```bash
+git clone -b wip-L8 git@github.com:Kyrpychenko/ToDoList-mbd.git
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Then open the newly created root folder of the local repo in VS Code. This can be done from the same console using
 
-### Premium Partners
+```bash
+cd ToDoList-mbd
+code .
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+When opening the cloned repo in VS Code, it will ask to reopen the folder in container, proceed so. If it doesnt ask, use this command using the VS Code command palette: `>open folder in container` to open the root folder of the repo using the dev container.
 
-## Contributing
+the first start of the container can take some minutes as all docker images need to be downloaded first.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+on first start several things need to be executed, to install php and js dependencies, set the environment and setup the database. This should automatically be executed on container creation. If any of these fail try them manually again starting with the failing command.
 
-## Code of Conduct
+```bash
+composer install
+npm install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## How to Run
 
-## Security Vulnerabilities
+to start the application run the following in two parallel terminals, in order to compile the javascript and to serve the backend:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+npm run watch-poll
+```
 
-## License
+```bash
+php artisan serve
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+after running these commands the backend is available (as should be prompted by VS Code) at `http://localhost:8000`.
+
+the frontend is available at `http://localhost:3000`, port 3000 essentially just proxies request to port 8000, so it requires the backend server to run. the server at port 3000, however, supports auto reload after recompiling, so port 3000 might be more useful for developing, as after every change to the source files the front end is recompiled and the browser is automatically reloaded to reflect the changes, while the server at port 8000 needs to be manually reloaded to reflect the changes (which also can be useful when working on design extensively tho)
+
+### developing the cypress end to end test
+
+the cypress setup is a bit fiddly, since cypress opens an electron window. we need to run an x server on the host were developing for this window to show up.
+
+1. Install VcXsrv from https://sourceforge.net/projects/vcxsrv/ on the Windows host
+2. Run VcXsrv's XLaunch program on the host. Use the default settings, but make sure to uncheck Native opengl and check Disable access control
+
+in order for this to work the dev container needs to have the following env options:
+
+```json
+    "containerEnv": {
+        "DISPLAY": "host.docker.internal:0.0",
+        "LIBGL_ALWAYS_INDIRECT": "0"
+    }
+```
+
+adapted from: https://github.com/cypress-io/cypress-documentation/issues/2956#issuecomment-704115471
+
+## Dev Setup Debugging
+
+generally the setup for development is just the automized creation of 2 docker containers, for which the configuration can be found in `.devcontainer`. the main part for setting up the php/npm container can be found in `.devcontainer/Dockerfile`, all commands found there must succeed for the container to properly start. so a first debugging step, after looking at the docker build logs of course, is to comment out the `RUN` commands, try to start the dev container with less commands, and running the commands one by one manually.
+
+### Xdebug
+
+using the run configuration "Listen for XDebug" in VS Code the Laravel application can be debugged. Breakpoints in .php files can be set, and currently active requests can be seen, inside blade files, however, breakpoints dont work.
+
+## Known Errors/Bugs
+
+### GitHub Authetification
+
+On windows the authentification just works, given the GitHub account one is logged in with has access rights to the SportButlerAPI repo. On Mac it doesnt seem to work automatically (which might also depend on the way of cloning the repo, SSH vs HTTPS). If the Repo is accessed through SSH one can create new SSH keys by running `ssh-keygen` leaving everything at its default by pressing enter a few times. the SSH public key, which can be printed in the console by running `cat ~/.ssh/id_rsa.pub` then needs to be added to your personal GitHub account (which must have access to MBDTeam/SportButlerAPI). This can be done on the GitHub Page at `Settings > SSH and GPG keys > New SSH Key`.
+
+### Xdebug
+
+when running in the container `Xdebug: [Step Debug] Could not connect to debugging client. Tried: localhost:9000 (through xdebug.client_host/xdebug.client_port) :-(` is thrown constantly, this happends while the Xdebug client in VS Code is not running, when not debugging this message can be ignored.
+
+## Misc
+
+git branch graphing "git adog"
+
+```bash
+git log --all --decorate --oneline --graph
+git config --global alias.adog "log --all --decorate --oneline --graph"
+git adog
+```
