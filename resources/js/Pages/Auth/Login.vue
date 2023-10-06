@@ -85,7 +85,7 @@ const submit = () => {
                     Forgot your password?
                 </Link>
 
-                <button class="btn btn-warning mb-5">Loged in</button>
+                <button class="btn btn-warning mb-5">Logeddddd in</button>
             </div>
         </form>
     </GuestLayout>
