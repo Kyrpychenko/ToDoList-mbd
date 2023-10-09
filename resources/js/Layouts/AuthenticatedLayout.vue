@@ -14,7 +14,7 @@ const user = usePage().props.auth.user;
 <template>
     <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
         <div class="container d-flex">
-            <Link :href="route('dashboard')" class="me-3">
+            <Link :href="route('Dashboard')" class="me-3">
                 <ApplicationLogo style="height: 2.25rem; fill: currentColor; color: rgb(31 41 55); filter: invert(1)" />
             </Link>
             <button
@@ -32,7 +32,7 @@ const user = usePage().props.auth.user;
                 <ul class="navbar-nav d-flex w-100">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">
-                            <NavLink :href="route('dashboard')" :active="route().current('dashboard')" class="text-decoration-none text-light">
+                            <NavLink :href="route('Dashboard')" :active="route().current('dashboard')" class="text-decoration-none text-light">
                                 Startseite
                             </NavLink>
                         </a>
