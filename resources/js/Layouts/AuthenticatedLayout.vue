@@ -37,32 +37,6 @@ const user = usePage().props.auth.user;
                             </NavLink>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
-                            <NavLink :href="route('history', user.id)" :active="route().current('history')" class="text-decoration-none text-light">
-                                Chronik
-                            </NavLink>
-                        </a>
-                    </li>
-                    <li class="nav-itemd-md-block d-none d-lg-block d-xl-block" v-if="user.role === 'admin'">
-                        <a class="nav-link" href="#">
-                            <NavLink
-                                :href="route('administration')"
-                                :active="route().current('administration')"
-                                class="text-decoration-none text-light"
-                            >
-                                Verwaltung
-                            </NavLink>
-                        </a>
-                    </li>
-                    <li class="nav-item" v-if="user.role === 'admin'">
-                        <a class="nav-link" href="#">
-                            <NavLink :href="route('qrcode')" :active="route().current('qrcode')" class="text-decoration-none text-light">
-                                QR-Code
-                            </NavLink>
-                        </a>
-                    </li>
-
                     <div class="flex-grow-1"></div>
 
                     <li class="nav-item dropdown">
