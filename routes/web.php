@@ -29,11 +29,7 @@ Route::get(
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})/*->middleware(['auth','verified'])*/->name('Dashboard');
-
-// Route::get('/readonly', function () {
-//     return Inertia::render('Readonly');
-// })->name('readonly');
+})->name('Dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
