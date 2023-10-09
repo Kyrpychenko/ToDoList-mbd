@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class TodoListUserAssignment extends Model
+class TodoItemUserAssignment extends Model
 {
     use HasFactory;
 
@@ -14,8 +14,8 @@ class TodoListUserAssignment extends Model
         ''
     ];
 
-    public function todoList(): BelongsTo
+    public function todoItem(): BelongsTo
     {
-        return $this->belongsTo(TodoList::class);
+        return $this->belongsTo(TodoItem::class);
     }
 }

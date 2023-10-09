@@ -11,7 +11,6 @@ return new class extends Migration
         Schema::create('todo_item_user_assignments', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-
             $table->foreignId('todo_item_id')->constrained()->onDelete('restrict')->onUpdate('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('restrict')->onUpdate('cascade');
         });
