@@ -18,7 +18,6 @@ return new class extends Migration
             $table->enum("role", ["admin", "moderator", "user"])->default("user");
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('tasks')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

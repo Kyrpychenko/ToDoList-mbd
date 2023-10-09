@@ -29,5 +29,9 @@ class DatabaseSeeder extends Seeder
             'password' =>  Hash::make('mod'),
             'role' => 'moderator',
         ]);
+        \App\Models\TodoListUserAssignment::factory()->count(3)->create([]);
+        \App\Models\TodoItem::factory()->count(5)->create([]);
+        \App\Models\TodoList::factory()->count(5)->create([]);
+        \App\Models\User::factory()->count(5)->create([]);
     }
 }

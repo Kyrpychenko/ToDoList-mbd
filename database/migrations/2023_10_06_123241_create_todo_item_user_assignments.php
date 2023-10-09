@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('todo_item_user_assignment', function (Blueprint $table) {
+        Schema::create('todo_item_user_assignments', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
 
@@ -19,6 +19,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('todo_item_user_assignment');
+        Schema::dropIfExists('todo_item_user_assignments');
     }
 };

@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('todo_items', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string("Task");
+            $table->string("task");
+            $table->enum("priority", ["light", "middle", "heavy"])->default("light");
         });
     }
 
