@@ -1,24 +1,19 @@
 <script setup lang="ts">
-import GuestLayout from "@/Layouts/GuestLayout.vue";
-import { Head, useForm } from "@inertiajs/vue3";
-import {
-    Button,
-    EmailInput,
-    PasswordInput,
-    TextInput,
-} from "custom-mbd-components";
+import GuestLayout from '@/Layouts/GuestLayout.vue';
+import { Head, useForm } from '@inertiajs/vue3';
+import { Button, EmailInput, PasswordInput, TextInput } from 'custom-mbd-components';
 
 const form = useForm({
-    name: "",
-    email: "",
-    password: "",
-    password_confirmation: "",
+    name: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
 });
 
 const submit = () => {
-    form.post(route("register"), {
+    form.post(route('register'), {
         onFinish: () => {
-            form.reset("password", "password_confirmation");
+            form.reset('password', 'password_confirmation');
         },
     });
 };
@@ -31,23 +26,11 @@ const submit = () => {
             <form @submit.prevent="submit">
                 <h2>Register</h2>
                 <div>
-                    <TextInput
-                        v-model="form.name"
-                        required
-                        placeholder="Name"
-                        autocomplete="name"
-                        :error="form.errors.name"
-                    />
+                    <TextInput v-model="form.name" required placeholder="Name" autocomplete="name" :error="form.errors.name" />
                 </div>
 
                 <div>
-                    <EmailInput
-                        v-model="form.email"
-                        required
-                        placeholder="Email"
-                        autocomplete="email"
-                        :error="form.errors.email"
-                    />
+                    <EmailInput v-model="form.email" required placeholder="Email" autocomplete="email" :error="form.errors.email" />
                 </div>
 
                 <div>
@@ -70,12 +53,8 @@ const submit = () => {
                     />
                 </div>
 
-                <div
-                    class="d-flex align-items-center justify-content-between mt-4"
-                >
-                    <a :href="route('login')" class="text-dark me-3"
-                        >Bereits Registriert?</a
-                    >
+                <div class="d-flex align-items-center justify-content-between mt-4">
+                    <a :href="route('login')" class="text-dark me-3">Bereits Registriert?</a>
                     <Button :loading="form.processing">Registrieren</Button>
                 </div>
             </form>

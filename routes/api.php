@@ -12,8 +12,16 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "api" middleware group. Make something great!
 |
+
+
+model
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+
+Route::controller(UserController::class)->middleware("auth")->group(function () {
+    Route::post('/updateUser/{user}', 'updateUser')->name('updateUser');
 });

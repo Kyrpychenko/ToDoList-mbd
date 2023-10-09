@@ -28,7 +28,7 @@ Route::get(
 )->middleware([/*'auth',*/'verified'])->name('dashboard');
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard.vue');
+    return Inertia::render('Dashboard');
 })/*->middleware(['auth','verified'])*/->name('Dashboard');
 
 // Route::get('/readonly', function () {
