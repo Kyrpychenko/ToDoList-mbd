@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string("task");
+            $table->foreignId('todo_list_id')->constrained()->onDelete('restrict')->onUpdate('cascade');
             $table->enum("priority", ["light", "middle", "heavy"])->default("light");
         });
     }
