@@ -22,14 +22,13 @@ use Inertia\Inertia;
     return redirect("/dashboard");
 });*/
 
-Route::get(
-    '/',
-    [DashboardController::class, "index"]
-)->middleware([/*'auth',*/'verified'])->name('dashboard');
+Route::get('/', function () {
+    return redirect("/dashboard");
+})->name('Dashboard');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})->name('Dashboard');
+})->middleware("auth")->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

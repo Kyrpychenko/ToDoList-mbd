@@ -10,8 +10,15 @@ const props = defineProps<{
 }>();
 
 const { user } = toRefs(props);
-const toDoList = ref<{ todo: string; id: string; priority: 'high' | 'mid' | 'low'; assignedTo: string; state: 'done' | 'in work' | '' }[]>([]);
-function addListItem() {}
+const toDoList = ref<{ title: string; id?: string; priority: 'Hoch' | 'Mittel' | 'Niedrig'; assignedTo: string; state: 'done' | 'in work' | '' }[]>(
+    []
+);
+const title = ref('');
+const priority = ref('');
+const assignedTo = ref('');
+function addListItem() {
+    toDoList.value.push({ title: title.value, priority: priority.value, assignedTo: assignedTo.value, state: 'in work' });
+}
 </script>
 <template>
     <Head title="Dashboard" />
@@ -35,15 +42,24 @@ function addListItem() {}
                     :affirm="{ class: 'btn btn-success', text: 'Hinzufügen', action: () => addListItem() }"
                     :negative="{ class: 'btn btn-danger', text: 'Abbrechen' }"
                 >
-                    <TextInput placeholder="Titel"></TextInput>
-                    <SelectInput showAll placeholder="Priorität" :options="['Hoch', 'Mittel', 'Niedrig']"></SelectInput>
-                    <SelectInput showAll placeholder="Zuweisung" :options="[$page.props.auth.user.name]"></SelectInput>
+                    <TextInput placeholder="Titel" v-model="title"></TextInput>
+                    <SelectInput showAll placeholder="Priorität" :options="['Hoch', 'Mittel', 'Niedrig']" v-model="priority"></SelectInput>
+                    <SelectInput showAll placeholder="Zuweisung" :options="[$page.props.auth.user.name]" v-model="assignedTo"></SelectInput>
                     <template #button><Button>Add</Button></template>
                 </Modal>
             </a>
-            <!-- <a href="#" class="list-group-item list-group-item-action list-group-item-warning">A simple secondary list group item</a>
-            <a href="#" class="list-group-item list-group-item-action list-group-item-success">A simple success list group item</a>
-            <a href="#" class="list-group-item list-group-item-action list-group-item-danger">A simple danger list group item</a> -->
+            <a
+                href="#"
+                v-for="todo in toDoList"
+                class="list-group-item list-group-item-action"
+                :class="{
+                    'list-group-item-warning': priority === 'Mittel',
+                    'list-group-item-success': priority === 'Niedrig',
+                    'list-group-item-danger': priority === 'Hoch',
+                }"
+            >
+                {{ title }}, {{ assignedTo }}
+            </a>
         </div>
     </AuthenticatedLayout>
 </template>
