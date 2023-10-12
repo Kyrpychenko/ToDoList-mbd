@@ -17,7 +17,13 @@ const title = ref('');
 const priority = ref('');
 const assignedTo = ref('');
 function addListItem() {
-    toDoList.value.push({ title: title.value, priority: priority.value, assignedTo: assignedTo.value, state: 'in work' });
+    const toDo = {
+        title: title.value,
+        priority: <'Hoch' | 'Mittel' | 'Niedrig'>priority.value,
+        assignedTo: assignedTo.value,
+        state: <'done' | 'in work' | ''>'in work',
+    };
+    toDoList.value.push(toDo);
 }
 </script>
 <template>
@@ -25,14 +31,7 @@ function addListItem() {
     <AuthenticatedLayout>
         <div class="py-4">
             <div class="mx-auto">
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900 dark:text-gray-100">You're logged in!</div>
-                </div>
-            </div>
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-2">
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900 dark:text-gray-100"></div>
-                </div>
+                <div class="bg-white">You're logged in!</div>
             </div>
         </div>
         <div class="list-group">
@@ -53,12 +52,12 @@ function addListItem() {
                 v-for="todo in toDoList"
                 class="list-group-item list-group-item-action"
                 :class="{
-                    'list-group-item-warning': priority === 'Mittel',
-                    'list-group-item-success': priority === 'Niedrig',
-                    'list-group-item-danger': priority === 'Hoch',
+                    'list-group-item-warning': todo.priority === 'Mittel',
+                    'list-group-item-success': todo.priority === 'Niedrig',
+                    'list-group-item-danger': todo.priority === 'Hoch',
                 }"
             >
-                {{ title }}, {{ assignedTo }}
+                {{ todo.title }}, {{ todo.assignedTo }}
             </a>
         </div>
     </AuthenticatedLayout>
