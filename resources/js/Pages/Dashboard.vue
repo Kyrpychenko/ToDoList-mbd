@@ -50,7 +50,7 @@ function addListItem() {
             <a
                 href="#"
                 v-for="todo in toDoList"
-                class="list-group-item list-group-item-action"
+                class="list-group-item list-group-item-action d-flex justify-content-between"
                 :class="{
                     'list-group-item-warning': todo.priority === 'Mittel',
                     'list-group-item-success': todo.priority === 'Niedrig',
@@ -58,6 +58,9 @@ function addListItem() {
                 }"
             >
                 {{ todo.title }}, {{ todo.assignedTo }}
+                <div>{{ todo.state }}</div>
+                <div>{{ todo.state }}</div>
+                <div>{{ todo.state }}</div>
             </a>
         </div>
     </AuthenticatedLayout>

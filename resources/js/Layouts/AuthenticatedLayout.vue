@@ -35,6 +35,9 @@ const user = usePage().props.auth.user;
                             <NavLink :href="route('Dashboard')" :active="route().current('dashboard')" class="text-decoration-none text-light">
                                 Startseite
                             </NavLink>
+                            <NavLink :href="route('chirps.index')" :active="route().current('chirps.index')" class="text-decoration-none text-light">
+                                Chirps
+                            </NavLink>
                         </a>
                     </li>
                     <div class="flex-grow-1"></div>
