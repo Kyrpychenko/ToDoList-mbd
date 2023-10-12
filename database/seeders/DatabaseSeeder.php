@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -33,19 +35,35 @@ class DatabaseSeeder extends Seeder
 
 
 
-        \App\Models\TodoList::factory()->count(5)
+        \App\Models\TodoList::factory()->count(3)
             ->has(
                 \App\Models\TodoItem::factory()->count(3)
                     ->has(\App\Models\TodoItemUserAssignment::factory([
                         'user_id' => $admin->id
-                    ])->count(5))
+                    ])->count(1))
             )
             ->create([]);
 
         \App\Models\TodoList::factory()->count(3)
+            ->has(
+                \App\Models\TodoItem::factory()->count(3)
+                    ->has(\App\Models\TodoItemUserAssignment::factory([
+                        'user_id' => $user->id
+                    ])->count(1))
+            )
+            ->create([]);
+
+
+        \App\Models\TodoList::factory()->count(3)
             ->has(\App\Models\TodoListUserAssignment::factory([
                 'user_id' => $admin->id
-            ])->count(5))
+            ])->count(3))
+            ->create([]);
+
+        \App\Models\TodoList::factory()->count(3)
+            ->has(\App\Models\TodoListUserAssignment::factory([
+                'user_id' => $user->id
+            ])->count(3))
             ->create([]);
     }
 }

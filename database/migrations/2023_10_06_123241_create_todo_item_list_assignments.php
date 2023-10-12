@@ -8,16 +8,16 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('todo_item_user_assignments', function (Blueprint $table) {
+        Schema::create('todo_item_list_assignments', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->foreignId('todo_item_id')->constrained()->onDelete('restrict')->onUpdate('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('restrict')->onUpdate('cascade');
+            $table->foreignId('todo_list_id')->constrained()->onDelete('restrict')->onUpdate('cascade');
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('todo_item_user_assignments');
+        Schema::dropIfExists('todo_item_list_assignments');
     }
 };
