@@ -17,23 +17,17 @@ const title = ref('');
 const priority = ref('');
 const assignedTo = ref('');
 function addListItem() {
-    const toDo = {
+    toDoList.value.push({
         title: title.value,
-        priority: <'Hoch' | 'Mittel' | 'Niedrig'>priority.value,
+        priority: priority.value as 'Hoch' | 'Mittel' | 'Niedrig',
         assignedTo: assignedTo.value,
-        state: <'done' | 'in work' | ''>'in work',
-    };
-    toDoList.value.push(toDo);
+        state: 'in work',
+    });
 }
 </script>
 <template>
     <Head title="Dashboard" />
     <AuthenticatedLayout>
-        <div class="py-4">
-            <div class="mx-auto">
-                <div class="bg-white">You're logged in!</div>
-            </div>
-        </div>
         <div class="list-group">
             <a href="#" class="list-group-item list-group-item-action list-group-item-secondary d-flex justify-content-between">
                 Add something to your list
@@ -47,21 +41,23 @@ function addListItem() {
                     <template #button><Button>Add</Button></template>
                 </Modal>
             </a>
-            <a
-                href="#"
-                v-for="todo in toDoList"
-                class="list-group-item list-group-item-action d-flex justify-content-between"
-                :class="{
-                    'list-group-item-warning': todo.priority === 'Mittel',
-                    'list-group-item-success': todo.priority === 'Niedrig',
-                    'list-group-item-danger': todo.priority === 'Hoch',
-                }"
-            >
-                {{ todo.title }}, {{ todo.assignedTo }}
-                <div>{{ todo.state }}</div>
-                <div>{{ todo.state }}</div>
-                <div>{{ todo.state }}</div>
-            </a>
         </div>
+        <a
+            href="#"
+            v-for="todo in toDoList"
+            class="my-3 list-group-item list-group-item d-flex rounded px-2 align-items-center fs-4"
+            style="height: 7vh"
+            :class="{
+                'list-group-item-warning': todo.priority === 'Mittel',
+                'list-group-item-success': todo.priority === 'Niedrig',
+                'list-group-item-danger': todo.priority === 'Hoch',
+            }"
+        >
+            <div class="text-decoration-none w-100 flex-row">
+                {{ todo.state }}
+                {{ todo.title }}
+                {{ todo.assignedTo }}
+            </div>
+        </a>
     </AuthenticatedLayout>
 </template>
