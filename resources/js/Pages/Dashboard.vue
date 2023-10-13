@@ -45,18 +45,23 @@ function addListItem() {
         <a
             href="#"
             v-for="todo in toDoList"
-            class="my-3 list-group-item list-group-item d-flex rounded px-2 align-items-center fs-4"
-            style="height: 7vh"
+            class="my-3 list-group-item list-group-item d-flex justify-content-center rounded align-items-center fs-4"
             :class="{
                 'list-group-item-warning': todo.priority === 'Mittel',
                 'list-group-item-success': todo.priority === 'Niedrig',
                 'list-group-item-danger': todo.priority === 'Hoch',
             }"
         >
-            <div class="text-decoration-none w-100 flex-row">
-                {{ todo.state }}
-                {{ todo.title }}
-                {{ todo.assignedTo }}
+            <div class="row g-0 ps-0 w-100 h-100 d-flex justify-content-center align-items-center">
+                <div class="col-1 p-2 border-end border-black h-100 d-flex justify-content-center align-items-center">
+                    {{ todo.state }}
+                </div>
+                <div class="col-10 p-2 px-3 border-end border-black h-100 d-flex align-items-center">
+                    {{ todo.title }}
+                </div>
+                <div class="col-1 d-flex p-2 align-items-center justify-content-center">
+                    {{ todo.assignedTo }}
+                </div>
             </div>
         </a>
     </AuthenticatedLayout>
