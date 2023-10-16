@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('todo_list_user_assignments', function (Blueprint $table) {
+        Schema::create('todo_list_user', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->foreignId('todo_list_id')->constrained()->onDelete('restrict')->onUpdate('cascade');
@@ -18,6 +18,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('todo_list_user_assignments');
+        Schema::dropIfExists('todo_list_user');
     }
 };

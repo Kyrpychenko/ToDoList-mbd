@@ -19,8 +19,8 @@ class TodoList extends Model
     {
         return $this->hasMany(TodoItem::class);
     }
-    public function todoListUserAssignments(): HasMany
+    public function todoListUser(): HasMany
     {
-        return $this->hasMany(TodoListUserAssignment::class);
+        return $this->hasMany(TodoListUser::class);
     }
 }

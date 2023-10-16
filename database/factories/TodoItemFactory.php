@@ -17,8 +17,8 @@ class TodoItemFactory extends Factory
     public function definition(): array
     {
         return [
-            'task' => fake()->words(5, true),
-
+            'title' => fake()->words(5, true),
+            'description' => fake()->words(10, true)
         ];
     }
 }

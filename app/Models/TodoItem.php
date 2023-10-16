@@ -12,14 +12,14 @@ class TodoItem extends Model
     use HasFactory;
 
     protected $fillable = [
-        'task',
+        'title',
     ];
 
-    public function todoItem(): HasMany
+    public function todoList(): BelongsTo
     {
-        return $this->hasMany(TodoItem::class);
+        return $this->belongsTo(TodoList::class);
     }
-    public function todoItemUserAssignments(): HasMany
+    public function todoItemUser(): HasMany
     {
         return $this->hasMany(TodoItem::class);
     }

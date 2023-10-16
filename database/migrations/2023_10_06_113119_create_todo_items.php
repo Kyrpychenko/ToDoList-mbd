@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('todo_items', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string("task");
+            $table->string("title");
+            $table->string("description");
             $table->foreignId('todo_list_id')->constrained()->onDelete('restrict')->onUpdate('cascade');
-            $table->enum("priority", ["light", "middle", "heavy"])->default("light");
+            $table->enum("priority", ["1", "2", "3"])->default("1");
         });
     }
 

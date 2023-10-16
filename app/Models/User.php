@@ -43,11 +43,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    public function tasks()
+    public function todos()
     {
-        return $this->hasMany(Task::class);
+        return $this->belongsToMany(TodoItem::class);
     }
-
+    public function todoLists()
+    {
+        return $this->belongsToMany(TodoList::class);
+    }
     public function chirps(): HasMany
     {
         return $this->hasMany(Chirp::class);

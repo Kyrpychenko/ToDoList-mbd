@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ToDoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,4 +25,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::controller(UserController::class)->middleware("auth")->group(function () {
     Route::post('/updateUser/{user}', 'updateUser')->name('updateUser');
+});
+
+Route::controller(ToDoController::class)->middleware("auth")->group(function () {
+    Route::post('/createTodo', 'store')->name('todo.store');
 });

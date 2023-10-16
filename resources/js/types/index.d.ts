@@ -4,16 +4,21 @@ export interface User {
     email: string;
     email_verified_at: string;
     role: 'admin' | 'user' | 'readOnly';
-    tasks: Task[];
+    todoLists: TodoList[];
 }
-
-type Task = {
+export type TodoItem = {
     id: number;
-    taskLogs: TaskLog[];
+    title: string;
+    description: string;
+    state: 'in work' | 'completed' | '';
+    listId: number;
+    priority: 1 | 2 | 3;
+    assignedTo: User[];
 };
-
-export type TaskLog = {
+export type TodoList = {
     id: number;
+    todos: TodoItem[];
+    name: string;
 };
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
