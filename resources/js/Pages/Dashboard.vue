@@ -3,11 +3,11 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Button, Message, Modal, TextInput, SelectInput, TextareaInput } from 'custom-mbd-components';
 import { Head, router, useForm } from '@inertiajs/vue3';
 import { ref, toRefs } from 'vue';
-import { TodoList, User } from '@/types';
+import { TodoItem, TodoList, User } from '@/types';
 const props = defineProps<{
     users: User[];
     currentUser: User;
-    currentLists: TodoList;
+    currentToDos: TodoItem[];
     // todo: ToDo;
 }>();
 
@@ -45,7 +45,7 @@ function addListItem() {
                 <a href="#" class="list-group-item list-group-item-action list-group-item-secondary d-flex justify-content-between">
                     Add something to your list
                     <Modal
-                        :affirm="{ class: 'btn btn-success', text: 'Hinzufügen', action: () => addListItem() }"
+                        :affirm="{ class: 'btn btn-success', text: 'Hinzufügen', action: addListItem }"
                         :negative="{ class: 'btn btn-danger', text: 'Abbrechen' }"
                     >
                         <TextInput placeholder="Titel" v-model="title"></TextInput>
@@ -91,7 +91,7 @@ function addListItem() {
                         </div>
                     </div>
                 </a> -->
-                <div>{{ currentLists }}</div>
+                <div>{{ currentToDos }}</div>
             </template>
         </Modal>
     </AuthenticatedLayout>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TodoItem;
 use App\Models\TodoList;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -14,9 +15,8 @@ class DashboardController extends Controller
     {
         $users = User::all();
         $currentUser = Auth::user();
-        if ($currentUser) {
-            $currentLists = $currentUser->todoLists()->get();
-        }
-        return Inertia::render('Dashboard', compact('users', 'currentUser', 'currentLists'));
+        $currentLists = $currentUser->todoLists()->get();
+        $currentToDos = TodoItem::whereIn('todo_list_id', $currentLists->pluck('id'))->get();
+        return Inertia::render('Dashboard', compact('users', 'currentUser', 'currentToDos'));
     }
 }
