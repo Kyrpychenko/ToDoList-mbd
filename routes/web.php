@@ -34,9 +34,6 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware("aut
 Route::resource('chirps', ChirpController::class)
     ->only(['index', 'store'])
     ->middleware(['auth', 'verified']);
-Route::resource('todo', ToDoController::class)
-    ->only(['index', 'store'])
-    ->middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

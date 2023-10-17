@@ -18,14 +18,4 @@ class ToDoController extends Controller
             'todo' => TodoItem::with('user:id,name')->latest()->get(),
         ]);
     }
-    public function store(Request $request): RedirectResponse
-    {
-        $validated = $request->validate([
-            'message' => 'required|string|max:255',
-        ]);
-
-        // $request->user()->create($validated);
-
-        return redirect(route('todo.index'));
-    }
 }
