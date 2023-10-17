@@ -12,10 +12,16 @@ class ToDoController extends Controller
 {
     /**
      * Display a listing of the resource.
-     */ public function index(): Response
+     */ public function store(Request $request)
     {
-        return Inertia::render('todo/Index', [
-            'todo' => TodoItem::with('user:id,name')->latest()->get(),
+        $validated = $request->validate([
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'priority' => 'required|in:1,2,3',
+            'assignedTo' => 'array',
+            'assignedTo*.' => 'integer|exists:users,id'
         ]);
+        TodoItem::create($validated);
+        return back();
     }
 }

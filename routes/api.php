@@ -27,6 +27,7 @@ Route::controller(UserController::class)->middleware("auth")->group(function () 
     Route::post('/updateUser/{user}', 'updateUser')->name('updateUser');
 });
 
+
 Route::controller(ToDoController::class)->middleware("auth")->group(function () {
-    Route::post('/createTodo', 'store')->name('todo.store');
+    Route::post('/storeTodo', 'store')->name('storeTodo');
 });

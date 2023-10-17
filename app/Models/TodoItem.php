@@ -14,6 +14,9 @@ class TodoItem extends Model
 
     protected $fillable = [
         'title',
+        'description',
+        'priority',
+        'todo_list_id'
     ];
 
     public function todoList(): BelongsTo

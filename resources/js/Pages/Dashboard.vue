@@ -9,6 +9,7 @@ const props = defineProps<{
     users: User[];
     currentUser: User;
     currentLists: TodoList[];
+    lists: TodoList[];
     // todo: ToDo;
 }>();
 
@@ -26,53 +27,65 @@ const priority = ref<Priority>('Niedrig');
 const assignedTo = ref('');
 const description = ref('');
 const form = useForm({
-    toDoList: toDoList.value,
+    title: '',
+    description: '',
+    priority: 'Niedrig',
+    assignedTo: '',
+    selectedList: 0,
 });
 function addListItem() {
-    toDoList.value.push({
-        title: title.value,
-        priority: getPriorityNumber(priority.value),
-        assignedTo: assignedTo.value,
-        state: 'in work',
-        description: description.value,
-    });
+    // toDoList.value.push({
+    //     title: title.value,
+    //     priority: getPriorityNumber(priority.value),
+    //     assignedTo: assignedTo.value,
+    //     state: 'in work',
+    //     description: description.value,
+    // });
+    console.log('klappt');
+    form.transform(data => ({ ...data, priority: getPriorityNumber(data.priority) }));
+    form.post(route('storeTodo'));
 }
 </script>
 <template>
     <Head title="Dashboard" />
     <AuthenticatedLayout>
-        <form @submit.prevent="form.post(route('todo.store'))">
-            <div class="list-group">
-                <a href="#" class="list-group-item list-group-item-action list-group-item-secondary d-flex justify-content-between">
-                    Add something to your list
-                    <Modal
-                        :affirm="{ class: 'btn btn-success', text: 'Hinzufügen', action: addListItem }"
-                        :negative="{ class: 'btn btn-danger', text: 'Abbrechen' }"
-                    >
-                        <TextInput placeholder="Titel" v-model="title"></TextInput>
-                        <div>Priorität:</div>
-                        <RadioGroup
-                            :options="[
-                                { text: 'Hoch', value: 'Hoch' },
-                                { text: 'Mittel', value: 'Mittel' },
-                                { text: 'Niedrig', value: 'Niedrig' },
-                            ]"
-                            v-model="priority"
-                        ></RadioGroup>
+        <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action list-group-item-secondary d-flex justify-content-between">
+                Add something to your list
+                <Modal
+                    :affirm="{ class: 'btn btn-success', text: 'Hinzufügen', action: addListItem }"
+                    :negative="{ class: 'btn btn-danger', text: 'Abbrechen' }"
+                >
+                    <TextInput placeholder="Titel" v-model="form.title"></TextInput>
+                    <div>Priorität:</div>
+                    <RadioGroup
+                        :options="[
+                            { text: 'Hoch', value: 'Hoch' },
+                            { text: 'Mittel', value: 'Mittel' },
+                            { text: 'Niedrig', value: 'Niedrig' },
+                        ]"
+                        v-model="form.priority"
+                    ></RadioGroup>
 
-                        <SelectInput
-                            showAll
-                            placeholder="Zuweisung"
-                            :options="users"
-                            v-model="assignedTo"
-                            :optionProjection="e => e.name"
-                        ></SelectInput>
-                        <TextareaInput placeholder="Beschreibung" v-model="description"></TextareaInput>
-                        <template #button><Button>Add</Button></template>
-                    </Modal>
-                </a>
-            </div>
-        </form>
+                    <SelectInput
+                        showAll
+                        placeholder="Zuweisung"
+                        :options="users"
+                        v-model="form.assignedTo"
+                        :optionProjection="e => e.name"
+                    ></SelectInput>
+                    <TextareaInput placeholder="Beschreibung" v-model="form.description"></TextareaInput>
+                    <SelectInput
+                        showAll
+                        placeholder="Welche Liste"
+                        :options="currentLists"
+                        @selectItem="e => (form.selectedList = e.id)"
+                        :optionProjection="e => e.name + ''"
+                    ></SelectInput>
+                    <template #button><Button>Add</Button></template>
+                </Modal>
+            </a>
+        </div>
         <template v-for="list of currentLists">
             <Modal v-for="todo of list.todos">
                 <div>
