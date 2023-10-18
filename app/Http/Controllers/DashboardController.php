@@ -12,6 +12,7 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
+        $lists = TodoList::all();
         $users = User::all();
         $currentUser = $request->user();
         $currentLists = $currentUser->todoLists()->get()->map(
@@ -30,6 +31,6 @@ class DashboardController extends Controller
                 ];
             }
         );
-        return Inertia::render('Dashboard', compact('currentUser', 'currentLists', 'users'));
+        return Inertia::render('Dashboard', compact('currentUser', 'currentLists', 'users', 'lists'));
     }
 }

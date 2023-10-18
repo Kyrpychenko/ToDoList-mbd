@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ListController;
 use App\Http\Controllers\ToDoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -30,4 +31,8 @@ Route::controller(UserController::class)->middleware("auth")->group(function () 
 
 Route::controller(ToDoController::class)->middleware("auth")->group(function () {
     Route::post('/storeTodo', 'store')->name('storeTodo');
+});
+
+Route::controller(ListController::class)->middleware("auth")->group(function () {
+    Route::post('/storeList', 'store')->name('storeList');
 });

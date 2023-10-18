@@ -1,9 +1,7 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ToDoController;
-use App\Http\Controllers\ChirpController;
-use App\Http\Controllers\ProfileController;
+namespace App\Http\Controllers;
+
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -30,7 +28,7 @@ Route::get('/', function () {
 })->name('Dashboard');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware("auth")->name('dashboard');
-
+Route::get('/lists', [ListController::class, 'index'])->middleware("auth")->name('lists');
 Route::resource('chirps', ChirpController::class)
     ->only(['index', 'store'])
     ->middleware(['auth', 'verified']);
