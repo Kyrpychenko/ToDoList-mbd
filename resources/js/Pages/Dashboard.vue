@@ -1,47 +1,25 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Button, Message, Modal, TextInput, SelectInput, TextareaInput, RadioGroup, MultiSelectInput } from 'custom-mbd-components';
-import { Head, router, useForm } from '@inertiajs/vue3';
-import { ref, toRefs } from 'vue';
-import { TodoItem, TodoList, User } from '@/types';
-import { getPriorityNumber, getPriorityString, Priority } from '@/utility';
-const props = defineProps<{
+import { Button, Modal, TextInput, SelectInput, TextareaInput, RadioGroup, MultiSelectInput } from 'custom-mbd-components';
+import { Head, useForm } from '@inertiajs/vue3';
+import { TodoList, User } from '@/types';
+import { getPriorityNumber, Priority } from '@/utility';
+defineProps<{
     users: User[];
     currentUser: User;
     currentLists: TodoList[];
     lists: TodoList[];
-    // todo: ToDo;
 }>();
 
-type ToDo = {
-    title: string;
-    id?: string;
-    priority: 3 | 2 | 1;
-    assignedTo: string;
-    state: 'done' | 'in work' | '';
-    description: string;
-};
-const toDoList = ref<ToDo[]>([]);
-const title = ref('');
-const priority = ref<Priority>('Niedrig');
-const assignedTo = ref('');
-const description = ref('');
-const form = useForm({
+const form = useForm<{ title: string; description: string; priority: Priority; assignedTo: User[]; selectedList: number }>({
     title: '',
     description: '',
     priority: 'Niedrig',
-    assignedTo: [] as User[],
+    assignedTo: [],
     selectedList: 0,
 });
 
 function addListItem() {
-    // toDoList.value.push({
-    //     title: title.value,
-    //     priority: getPriorityNumber(priority.value),
-    //     assignedTo: assignedTo.value,
-    //     state: 'in work',
-    //     description: description.value,
-    // });
     console.log('klappt');
     form.transform(data => ({ ...data, priority: getPriorityNumber(data.priority), assignedTo: form.assignedTo.map(a => a.id) }));
     form.post(route('storeTodo'));
