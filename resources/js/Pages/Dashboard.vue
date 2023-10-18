@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Button, Message, Modal, TextInput, SelectInput, TextareaInput, RadioGroup } from 'custom-mbd-components';
+import { Button, Message, Modal, TextInput, SelectInput, TextareaInput, RadioGroup, MultiSelectInput } from 'custom-mbd-components';
 import { Head, router, useForm } from '@inertiajs/vue3';
 import { ref, toRefs } from 'vue';
 import { TodoItem, TodoList, User } from '@/types';
@@ -30,9 +30,10 @@ const form = useForm({
     title: '',
     description: '',
     priority: 'Niedrig',
-    assignedTo: '',
+    assignedTo: [] as User[],
     selectedList: 0,
 });
+
 function addListItem() {
     // toDoList.value.push({
     //     title: title.value,
@@ -42,7 +43,7 @@ function addListItem() {
     //     description: description.value,
     // });
     console.log('klappt');
-    form.transform(data => ({ ...data, priority: getPriorityNumber(data.priority) }));
+    form.transform(data => ({ ...data, priority: getPriorityNumber(data.priority), assignedTo: form.assignedTo.map(a => a.id) }));
     form.post(route('storeTodo'));
 }
 </script>
@@ -51,7 +52,7 @@ function addListItem() {
     <AuthenticatedLayout>
         <div class="list-group">
             <a href="#" class="list-group-item list-group-item-action list-group-item-secondary d-flex justify-content-between">
-                Add something to your list
+                Fügen Sie etwas zur Liste hinzu:
                 <Modal
                     :affirm="{ class: 'btn btn-success', text: 'Hinzufügen', action: addListItem }"
                     :negative="{ class: 'btn btn-danger', text: 'Abbrechen' }"
@@ -66,23 +67,22 @@ function addListItem() {
                         ]"
                         v-model="form.priority"
                     ></RadioGroup>
-
-                    <SelectInput
-                        showAll
+                    {{ form.assignedTo }}
+                    <MultiSelectInput
+                        v-model:selected="form.assignedTo"
                         placeholder="Zuweisung"
                         :options="users"
-                        v-model="form.assignedTo"
                         :optionProjection="e => e.name"
-                    ></SelectInput>
+                    ></MultiSelectInput>
                     <TextareaInput placeholder="Beschreibung" v-model="form.description"></TextareaInput>
                     <SelectInput
                         showAll
                         placeholder="Welche Liste"
-                        :options="currentLists"
+                        :options="lists"
                         @selectItem="e => (form.selectedList = e.id)"
                         :optionProjection="e => e.name + ''"
                     ></SelectInput>
-                    <template #button><Button>Add</Button></template>
+                    <template #button><Button>Hinzufügen</Button></template>
                 </Modal>
             </a>
         </div>

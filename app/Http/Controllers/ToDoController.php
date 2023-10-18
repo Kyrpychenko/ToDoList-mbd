@@ -19,9 +19,16 @@ class ToDoController extends Controller
             'description' => 'required|string',
             'priority' => 'required|in:1,2,3',
             'assignedTo' => 'array',
-            'assignedTo*.' => 'integer|exists:users,id'
+            'assignedTo*.' => 'integer|exists:users,id',
+            'selectedList' => 'integer|exists:todo_lists,id'
         ]);
-        TodoItem::create($validated);
+        $todoItem = TodoItem::create([
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'priority' => $validated['priority'],
+            'todo_list_id' => $validated['selectedList']
+        ]);
+        $todoItem->todoItemUser()->attach($validated['assignedTo']);
         return back();
     }
 }

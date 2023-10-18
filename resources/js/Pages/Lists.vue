@@ -26,7 +26,7 @@ function addList() {
                 </Modal>
             </a>
         </div>
-        <div class="list-group">
+        <div class="list-group mt-3">
             <button type="button" class="list-group-item list-group-item-action" v-for="list of lists">{{ list.name }}</button>
         </div>
     </AuthenticatedLayout>

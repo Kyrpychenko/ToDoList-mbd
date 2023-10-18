@@ -20,6 +20,7 @@ class ListController extends Controller
             'name' => 'required|string'
         ]);
         TodoList::create($validated);
+
         return back();
     }
 }
