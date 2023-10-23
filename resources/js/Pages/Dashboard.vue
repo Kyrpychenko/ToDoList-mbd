@@ -45,7 +45,7 @@ function addListItem() {
                         ]"
                         v-model="form.priority"
                     ></RadioGroup>
-                    {{ form.assignedTo }}
+
                     <MultiSelectInput
                         v-model:selected="form.assignedTo"
                         placeholder="Zuweisung"
@@ -64,41 +64,33 @@ function addListItem() {
                 </Modal>
             </a>
         </div>
-        <template v-for="list of currentLists">
-            <Modal v-for="todo of list.todos">
-                <div>
-                    <h3>{{ todo.title }}</h3>
-                    <div class="w-50">{{ todo.description }}</div>
-                    <div>Abgabedatum:</div>
-                </div>
-                <template #button>
-                    <a
-                        href="#"
-                        class="my-3 list-group-item d-flex justify-content-center rounded align-items-center fs-4"
-                        :class="{
-                            'list-group-item-warning': todo.priority == 2,
-                            'list-group-item-success': todo.priority == 1,
-                            'list-group-item-danger': todo.priority == 3,
-                        }"
-                    >
-                        <div class="row g-0 ps-0 w-100 h-100 d-flex justify-content-center align-items-center">
-                            <div class="col-1 p-2 border-end border-black h-100 d-flex justify-content-center align-items-center">
-                                {{ todo.state }}
-                            </div>
-                            <div class="col-10 p-2 px-3 h-100 d-flex align-items-center">
-                                {{ todo.title }}
-                            </div>
-                            <div
-                                class="col-1 d-flex p-2 align-items-center justify-content-center border-start border-black flex-column"
-                                v-if="todo.assignedTo.length > 0"
-                            >
-                                <div v-for="user of todo.assignedTo">{{ user.name }}</div>
-                            </div>
-                            <div v-else class="col-1"></div>
+        <div class="row">
+            <template v-for="list of currentLists">
+                <div class="col-3 my-1" style="max-height: max-content" v-for="todo of list.todos">
+                    <Modal :title="todo.title">
+                        <div>
+                            <div class="w-50">{{ todo.description }}</div>
+                            <div>Abgabedatum:</div>
                         </div>
-                    </a>
-                </template>
-            </Modal>
-        </template>
+                        <template #button>
+                            <div
+                                class="card text-white"
+                                :class="{
+                                    'bg-warning': todo.priority == 2,
+                                    'bg-success': todo.priority == 1,
+                                    'bg-danger': todo.priority == 3,
+                                }"
+                            >
+                                <div class="card-header fw-bold">⚙️ {{ todo.title }}</div>
+                                <div class="card-body">
+                                    <p class="card-text">{{ todo.description }}{{ todo.description }}</p>
+                                </div>
+                                <div class="card-footer" v-if="todo.assignedTo.length > 0">{{ todo.assignedTo.map(a => a.name).join(', ') }}</div>
+                            </div>
+                        </template>
+                    </Modal>
+                </div>
+            </template>
+        </div>
     </AuthenticatedLayout>
 </template>
