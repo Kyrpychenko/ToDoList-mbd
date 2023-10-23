@@ -20,12 +20,15 @@ class ToDoController extends Controller
             'priority' => 'required|in:1,2,3',
             'assignedTo' => 'array',
             'assignedTo*.' => 'integer|exists:users,id',
-            'selectedList' => 'integer|exists:todo_lists,id'
+            'selectedList' => 'integer|exists:todo_lists,id',
+            'deadline' => 'required|date',
+
         ]);
         $todoItem = TodoItem::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
             'priority' => $validated['priority'],
+            'deadline' => $validated['deadline'],
             'todo_list_id' => $validated['selectedList']
         ]);
         $todoItem->todoItemUser()->attach($validated['assignedTo']);

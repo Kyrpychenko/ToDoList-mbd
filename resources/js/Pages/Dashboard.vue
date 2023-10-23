@@ -22,8 +22,11 @@ const form = useForm<{ title: string; description: string; priority: Priority; a
 });
 
 function addListItem() {
-    console.log('klappt');
-    form.transform(data => ({ ...data, priority: getPriorityNumber(data.priority), assignedTo: form.assignedTo.map(a => a.id) }));
+    form.transform(data => ({
+        ...data,
+        priority: getPriorityNumber(data.priority),
+        assignedTo: form.assignedTo.map(a => a.id),
+    }));
     form.post(route('storeTodo'));
 }
 </script>
@@ -38,7 +41,8 @@ function addListItem() {
                     :negative="{ class: 'btn btn-danger', text: 'Abbrechen' }"
                 >
                     <TextInput placeholder="Titel" v-model="form.title"></TextInput>
-                    <div>Priorität:</div>
+                    <TextareaInput placeholder="Beschreibung" v-model="form.description"></TextareaInput>
+                    <div class="mt-2">Priorität:</div>
                     <RadioGroup
                         :options="[
                             { text: 'Hoch', value: 'Hoch' },
@@ -47,32 +51,37 @@ function addListItem() {
                         ]"
                         v-model="form.priority"
                     ></RadioGroup>
+                    <div class="mt-2">Fertig bis:</div>
                     <DateInput v-model="form.deadline"></DateInput>
+                    <SelectInput
+                        showAll
+                        placeholder="Liste"
+                        :options="currentLists"
+                        @selectItem="e => (form.selectedList = e.id)"
+                        :optionProjection="e => e.name + ''"
+                    ></SelectInput>
+                    <div class="mt-2">Zugewiesene Benutzer*innen:</div>
                     <MultiSelectInput
                         v-model:selected="form.assignedTo"
                         placeholder="Zuweisung"
                         :options="users"
                         :optionProjection="e => e.name"
                     ></MultiSelectInput>
-                    <TextareaInput placeholder="Beschreibung" v-model="form.description"></TextareaInput>
-                    <SelectInput
-                        showAll
-                        placeholder="Welche Liste"
-                        :options="lists"
-                        @selectItem="e => (form.selectedList = e.id)"
-                        :optionProjection="e => e.name + ''"
-                    ></SelectInput>
                     <template #button><Button>Hinzufügen</Button></template>
                 </Modal>
             </a>
         </div>
         <!-- <div class="row"> -->
         <template v-for="list of currentLists">
+            <div class="my-3 card text-black text-center" style="background-color: #fd7e14">-{{ list.name }}-</div>
             <div class="my-3" style="max-height: max-content" v-for="todo of list.todos">
                 <Modal :title="todo.title">
-                    <div>
+                    <div id="task">
                         <div class="w-50">{{ todo.description }}</div>
                         <div>Abgabedatum: {{ todo.deadline }}</div>
+
+                        <Button v-if="!todo.assignedTo.find(e => e.id == currentUser.id)">Zuordnen</Button>
+                        <Button v-if="todo.assignedTo.find(e => e.id == currentUser.id)">Verlassen</Button>
                     </div>
                     <template #button>
                         <div
