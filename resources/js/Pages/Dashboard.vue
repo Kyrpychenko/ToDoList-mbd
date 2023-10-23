@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Button, Modal, TextInput, SelectInput, TextareaInput, RadioGroup, MultiSelectInput } from 'custom-mbd-components';
+import { Button, Modal, TextInput, SelectInput, TextareaInput, RadioGroup, MultiSelectInput, DateInput } from 'custom-mbd-components';
 import { Head, useForm } from '@inertiajs/vue3';
 import { TodoList, User } from '@/types';
 import { getPriorityNumber, Priority } from '@/utility';
+
 defineProps<{
     users: User[];
     currentUser: User;
@@ -11,12 +12,13 @@ defineProps<{
     lists: TodoList[];
 }>();
 
-const form = useForm<{ title: string; description: string; priority: Priority; assignedTo: User[]; selectedList: number }>({
+const form = useForm<{ title: string; description: string; priority: Priority; assignedTo: User[]; selectedList: number; deadline: string }>({
     title: '',
     description: '',
     priority: 'Niedrig',
     assignedTo: [],
     selectedList: 0,
+    deadline: '',
 });
 
 function addListItem() {
@@ -45,7 +47,7 @@ function addListItem() {
                         ]"
                         v-model="form.priority"
                     ></RadioGroup>
-                    {{ form.assignedTo }}
+                    <DateInput v-model="form.deadline"></DateInput>
                     <MultiSelectInput
                         v-model:selected="form.assignedTo"
                         placeholder="Zuweisung"
@@ -64,41 +66,39 @@ function addListItem() {
                 </Modal>
             </a>
         </div>
+        <!-- <div class="row"> -->
         <template v-for="list of currentLists">
-            <Modal v-for="todo of list.todos">
-                <div>
-                    <h3>{{ todo.title }}</h3>
-                    <div class="w-50">{{ todo.description }}</div>
-                    <div>Abgabedatum:</div>
-                </div>
-                <template #button>
-                    <a
-                        href="#"
-                        class="my-3 list-group-item d-flex justify-content-center rounded align-items-center fs-4"
-                        :class="{
-                            'list-group-item-warning': todo.priority == 2,
-                            'list-group-item-success': todo.priority == 1,
-                            'list-group-item-danger': todo.priority == 3,
-                        }"
-                    >
-                        <div class="row g-0 ps-0 w-100 h-100 d-flex justify-content-center align-items-center">
-                            <div class="col-1 p-2 border-end border-black h-100 d-flex justify-content-center align-items-center">
-                                {{ todo.state }}
-                            </div>
-                            <div class="col-10 p-2 px-3 h-100 d-flex align-items-center">
+            <div class="my-3" style="max-height: max-content" v-for="todo of list.todos">
+                <Modal :title="todo.title">
+                    <div>
+                        <div class="w-50">{{ todo.description }}</div>
+                        <div>Abgabedatum: {{ todo.deadline }}</div>
+                    </div>
+                    <template #button>
+                        <div
+                            class="card text-white"
+                            :class="{
+                                'bg-warning': todo.priority == 2,
+                                'bg-success': todo.priority == 1,
+                                'bg-danger': todo.priority == 3,
+                            }"
+                        >
+                            <div class="card-header fw-bold">
+                                {{ todo.state == 'Finished' ? '✔️' : todo.state == 'InWork' ? '⚙️' : '❌' }}
                                 {{ todo.title }}
                             </div>
-                            <div
-                                class="col-1 d-flex p-2 align-items-center justify-content-center border-start border-black flex-column"
-                                v-if="todo.assignedTo.length > 0"
-                            >
-                                <div v-for="user of todo.assignedTo">{{ user.name }}</div>
+                            <div class="card-body">
+                                <p class="card-text">{{ todo.description }}{{ todo.description }}</p>
                             </div>
-                            <div v-else class="col-1"></div>
+                            <div class="card-footer" v-if="todo.assignedTo.length > 0">
+                                Zugewiesene Benutzer*in: {{ todo.assignedTo.map(a => a.name).join(', ') }}
+                            </div>
                         </div>
-                    </a>
-                </template>
-            </Modal>
+                    </template>
+                </Modal>
+            </div>
         </template>
+
+        <!-- </div> -->
     </AuthenticatedLayout>
 </template>

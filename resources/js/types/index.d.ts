@@ -10,10 +10,11 @@ export type TodoItem = {
     id: number;
     title: string;
     description: string;
-    state: 'in work' | 'completed' | '';
+    state: 'Unstarted' | 'InWork' | 'Finished';
     listId: number;
     priority: 1 | 2 | 3;
     assignedTo: User[];
+    deadline: string;
 };
 export type TodoList = {
     id: number;
