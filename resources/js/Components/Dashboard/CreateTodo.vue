@@ -14,20 +14,20 @@ const props = defineProps<{
 const { users } = toRefs(props);
 
 const itemModalOpen = ref(false);
-watch(itemModalOpen, () => taskForm.reset());
+watch(itemModalOpen, () => todoForm.reset());
 
 function addListItem() {
-    taskForm.transform(data => ({
+    todoForm.transform(data => ({
         ...data,
         priority: getPriorityNumber(data.priority),
-        assignedTo: taskForm.assignedTo.map(a => a.id),
+        assignedTo: todoForm.assignedTo.map(a => a.id),
     }));
-    taskForm.post(route('storeTodo'));
+    todoForm.post(route('storeTodo'));
 }
 
-const possibleUsers = computed(() => users.value.filter(u => u.todo_lists.filter(l => l.id == taskForm.selectedList).length != 0));
+const possibleUsers = computed(() => users.value.filter(u => u.todo_lists.filter(l => l.id == todoForm.selectedList).length != 0));
 
-const taskForm = useForm<{ title: string; description: string; priority: Priority; assignedTo: User[]; selectedList: number; deadline: string }>({
+const todoForm = useForm<{ title: string; description: string; priority: Priority; assignedTo: User[]; selectedList: number; deadline: string }>({
     title: '',
     description: '',
     priority: 'Niedrig',
@@ -46,8 +46,8 @@ const taskForm = useForm<{ title: string; description: string; priority: Priorit
                 :negative="{ class: 'btn btn-danger', text: 'Abbrechen' }"
             >
                 <!-- <form @submit="preve"></form> -->
-                <TextInput placeholder="Titel" v-model="taskForm.title" min="10" required></TextInput>
-                <TextareaInput placeholder="Beschreibung" v-model="taskForm.description"></TextareaInput>
+                <TextInput placeholder="Titel" v-model="todoForm.title" min="10" required />
+                <TextareaInput placeholder="Beschreibung" v-model="todoForm.description" />
                 <div class="mt-2">Priorität:</div>
                 <RadioGroup
                     :options="[
@@ -55,21 +55,21 @@ const taskForm = useForm<{ title: string; description: string; priority: Priorit
                         { text: 'Mittel', value: 'Mittel' },
                         { text: 'Niedrig', value: 'Niedrig' },
                     ]"
-                    v-model="taskForm.priority"
+                    v-model="todoForm.priority"
                 ></RadioGroup>
                 <div class="mt-2">Fertig bis:</div>
-                <DateInput v-model="taskForm.deadline"></DateInput>
+                <DateInput v-model="todoForm.deadline"></DateInput>
                 <SelectInput
                     showAll
                     placeholder="Liste"
                     :options="currentLists"
-                    @selectItem="e => (taskForm.selectedList = e.id)"
+                    @selectItem="e => (todoForm.selectedList = e.id)"
                     :optionProjection="e => e.name + ''"
                 ></SelectInput>
                 <div class="mt-2">Zugewiesene Benutzer:</div>
 
                 <MultiSelectInput
-                    v-model:selected="taskForm.assignedTo"
+                    v-model:selected="todoForm.assignedTo"
                     placeholder="Zuweisung"
                     :options="possibleUsers"
                     :optionProjection="e => e.name"

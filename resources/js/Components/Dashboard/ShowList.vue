@@ -18,9 +18,9 @@ const assignUserForm = useForm<{ assignedTo: User[] }>({
     assignedTo: [],
 });
 
-const assignedUsers = computed(() => users.value.filter(u => u.todo_lists.filter(l => l.id == taskForm.selectedList).length != 0));
+const assignedUsers = computed(() => users.value.filter(u => u.todo_lists.filter(l => l.id == todoForm.selectedList).length != 0));
 
-const taskForm = useForm<{ title: string; description: string; priority: Priority; assignedTo: User[]; selectedList: number; deadline: string }>({
+const todoForm = useForm<{ title: string; description: string; priority: Priority; assignedTo: User[]; selectedList: number; deadline: string }>({
     title: '',
     description: '',
     priority: 'Niedrig',

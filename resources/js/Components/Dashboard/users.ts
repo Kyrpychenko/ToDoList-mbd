@@ -1,3 +1,4 @@
-import { props } from './ShowTask.vue';
+import { toRefs } from 'vue';
+import props from './ShowTodo.vue';
 
 const { users } = toRefs(props);

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import ShowTask from '@//Components/Dashboard/ShowTask.vue';
+import ShowTodo from '@//Components/Dashboard/ShowTodo.vue';
 import ShowList from '@/Components/Dashboard/ShowList.vue';
 import CreateList from '@/Components/Dashboard/CreateList.vue';
-import CreateTask from '@/Components/Dashboard/CreateTask.vue';
+import CreateTodo from '@/Components/Dashboard/CreateTodo.vue';
 import { Head } from '@inertiajs/vue3';
 import { TodoList, User } from '@/types';
 import { toRefs } from 'vue';
@@ -15,20 +15,15 @@ const props = defineProps<{
     lists: TodoList[];
 }>();
 const { users } = toRefs(props);
-
-// console.log(users);
 </script>
 <template>
     <Head title="Dashboard" />
     <AuthenticatedLayout>
-        <CreateTask :users="users" :current-lists="currentLists"></CreateTask>
-        <CreateList :users="users" :current-user="currentUser"></CreateList>
+        <CreateTodo :users="users" :current-lists="currentLists" />
+        <CreateList :users="users" :current-user="currentUser" />
         <template v-for="list of currentLists">
-            <ShowList :list="list" :current-user="currentUser" :users="users"></ShowList>
-            <div v-for="todo of list.todos" class="my-3" style="max-height: max-content">
-                <ShowTask :todo="todo" :current-user="currentUser"></ShowTask>
-            </div>
+            <ShowList :list="list" :current-user="currentUser" :users="users" />
+            <ShowTodo v-for="todo of list.todos" :todo="todo" :current-user="currentUser" class="my-3" style="max-height: max-content" />
         </template>
-        <!-- </div> -->
     </AuthenticatedLayout>
 </template>
