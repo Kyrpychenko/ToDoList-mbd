@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import ShowTodo from '@//Components/Dashboard/ShowTodo.vue';
-import ShowList from '@/Components/Dashboard/ShowList.vue';
-import CreateList from '@/Components/Dashboard/CreateList.vue';
-import CreateTodo from '@/Components/Dashboard/CreateTodo.vue';
+import ShowTodo from '@//Components/Dashboard/Show/ShowTodo.vue';
+import ShowList from '@/Components/Dashboard/Show/ShowList.vue';
+import CreateList from '@/Components/Dashboard/Create/CreateList.vue';
+import CreateTodo from '@/Components/Dashboard/Create/CreateTodo.vue';
 import { Head } from '@inertiajs/vue3';
 import { TodoList, User } from '@/types';
 import { toRefs } from 'vue';

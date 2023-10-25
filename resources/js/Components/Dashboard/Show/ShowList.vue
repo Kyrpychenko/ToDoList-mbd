@@ -7,7 +7,6 @@ import { computed, ref } from 'vue';
 import { toRefs } from 'vue';
 
 const props = defineProps<{
-    // todo: TodoItem;
     currentUser: User;
     list: TodoList;
     users: User[];
