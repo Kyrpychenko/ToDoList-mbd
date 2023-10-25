@@ -30,37 +30,21 @@ function syncUserList(list: TodoList) {
 <template>
     <Modal
         :title="list.name"
-        :affirm="{ class: 'btn btn-success ', text: 'Speichern', action: () => syncUserList(list) }"
+        :affirm="{ class: 'btn btn-success ', text: currentUser.role == 'admin' ? 'Speichern' : 'schließen', action: () => syncUserList(list) }"
         :negative="{ class: 'btn btn-danger', text: 'Abbrechen', action: () => assignUserForm.reset() }"
     >
         <div id="list">
             <div class="card-body">
                 Zugewiesene Benutzer:
-                <div v-for="user in users.filter(u => u.todo_lists.filter(l => l.id == list.id).length)">
-                    <Modal
-                        :title="user.name"
-                        :affirm="{
-                            class: 'btn btn-success ',
-                            text: 'Entfernen',
-                            action: () => console.log(user.name),
-                        }"
-                        :negative="{
-                            class: 'btn btn-danger',
-                            text: 'Abbrechen',
-                        }"
-                    >
-                        <div class="card-body">Nutzer entfernen?</div>
-
-                        <template #button>
-                            <div class="my-3 card text-black text-center" style="background-color: #f1ede4">
-                                <div class="card-header">
-                                    <p class="card-text">{{ user.name }}</p>
-                                </div>
-                            </div>
-                        </template>
-                    </Modal>
+                <div v-for="user in users.filter(u => u.todo_lists.filter(l => l.id == list.id).length && u.role !== 'admin')">
+                    <div class="my-3 card text-black text-center" style="background-color: #f1ede4">
+                        <div class="card-header">
+                            <p class="card-text">{{ user.name }}</p>
+                        </div>
+                    </div>
                 </div>
                 <MultiSelectInput
+                    v-if="currentUser.role == 'admin'"
                     v-model:selected="assignUserForm.assignedTo"
                     :keyExtractor="e => e.id + ''"
                     :show-selected="false"
