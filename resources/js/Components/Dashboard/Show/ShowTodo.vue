@@ -15,12 +15,12 @@ const props = defineProps<{
             :affirm="{
                 class: 'btn btn-success ',
                 text: 'Zuordnen',
-                disabled: !!todo.assignedTo.find(e => e.id == currentUser.id),
+                disabled: !!todo.todo_item_user.find(e => e.id == currentUser.id),
             }"
             :negative="{
                 class: 'btn btn-danger',
                 text: 'Verlassen',
-                disabled: !todo.assignedTo.find(e => e.id == currentUser.id),
+                disabled: !todo.todo_item_user.find(e => e.id == currentUser.id),
             }"
         >
             <div id="todo">
@@ -43,8 +43,8 @@ const props = defineProps<{
                     <div class="card-body">
                         <p class="card-text">{{ todo.description }}{{ todo.description }}</p>
                     </div>
-                    <div class="card-footer" v-if="todo.assignedTo.length > 0">
-                        Zugewiesene Benutzer: {{ todo.assignedTo.map(a => a.name).join(', ') }}
+                    <div class="card-footer" v-if="todo.todo_item_user.length > 0">
+                        Zugewiesene Benutzer: {{ todo.todo_item_user.map(a => a.name).join(', ') }}
                     </div>
                 </div>
             </template>

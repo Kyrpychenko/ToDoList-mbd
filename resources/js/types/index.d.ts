@@ -13,13 +13,12 @@ export type TodoItem = {
     state: 'Unstarted' | 'InWork' | 'Finished';
     listId: number;
     priority: 1 | 2 | 3;
-    assignedTo: User[];
+    todo_item_user: User[];
     deadline: string;
 };
 export type TodoList = {
     id: number;
-    todos: TodoItem[];
-    // assignedTo: User[];
+    todo_items: TodoItem[];
     name: string;
 };
 

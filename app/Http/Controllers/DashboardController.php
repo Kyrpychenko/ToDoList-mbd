@@ -13,7 +13,7 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $lists = TodoList::all();
+        $lists = TodoList::with("todoItems", "todoItems.todoItemUser")->get();
         $users = User::with('todoLists')->get();
         // $listsUsers = TodoListUser::all();
         $currentUser = $request->user();
@@ -21,19 +21,19 @@ class DashboardController extends Controller
             function (TodoList $list) {
                 return [
                     ...$list->toArray(),
-                    'todos' =>
+                    'todo_items' =>
                     $list->todoItems()->get()->map(
                         function (TodoItem $todoItem) {
                             return [
                                 ...$todoItem->toArray(),
-                                'assignedTo' => $todoItem->todoItemUser()->get()
+                                'todo_item_user' => $todoItem->todoItemUser()->get()
                             ];
                         }
                     )
                 ];
             }
         );
-        // dd($users);
+        // dd($lists);
         return Inertia::render('Dashboard', compact('currentUser', 'currentLists', 'users', 'lists'));
     }
 }

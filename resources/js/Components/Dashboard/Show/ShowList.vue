@@ -11,21 +11,10 @@ const props = defineProps<{
     list: TodoList;
     users: User[];
 }>();
-const { users } = toRefs(props);
+const { users, list } = toRefs(props);
 
 const assignUserForm = useForm<{ assignedTo: User[] }>({
-    assignedTo: [],
-});
-
-const assignedUsers = computed(() => users.value.filter(u => u.todo_lists.filter(l => l.id == todoForm.selectedList).length != 0));
-
-const todoForm = useForm<{ title: string; description: string; priority: Priority; assignedTo: User[]; selectedList: number; deadline: string }>({
-    title: '',
-    description: '',
-    priority: 'Niedrig',
-    assignedTo: [],
-    selectedList: 0,
-    deadline: '',
+    assignedTo: users.value.filter(u => u.todo_lists.filter(l => l.id == list.value.id).length),
 });
 
 function syncUserList(list: TodoList) {
@@ -34,6 +23,7 @@ function syncUserList(list: TodoList) {
         assignedTo: assignUserForm.assignedTo.map(a => a.id),
     }));
     assignUserForm.post(route('syncUserList', list.id));
+    // assignUserForm.reset();
 }
 </script>
 
@@ -72,8 +62,9 @@ function syncUserList(list: TodoList) {
                 </div>
                 <MultiSelectInput
                     v-model:selected="assignUserForm.assignedTo"
+                    :keyExtractor="e => e.id + ''"
+                    :show-selected="false"
                     placeholder="+"
-                    style="background-color: #f1ede4"
                     :options="users.filter(u => u.role !== 'admin')"
                     :optionProjection="e => e.name"
                 ></MultiSelectInput>
