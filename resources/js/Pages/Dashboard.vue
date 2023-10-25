@@ -1,18 +1,24 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import ShowTask from '@//Components/Dashboard/ShowTask.vue';
 import { Button, Modal, TextInput, SelectInput, TextareaInput, RadioGroup, MultiSelectInput, DateInput } from 'custom-mbd-components';
 import { Head, useForm } from '@inertiajs/vue3';
 import { TodoList, User } from '@/types';
 import { getPriorityNumber, Priority } from '@/utility';
+import { computed, ref } from 'vue';
+import { toRefs } from 'vue';
+import { watch } from 'vue';
+import ShowList from '@/Components/Dashboard/ShowList.vue';
 
-defineProps<{
+const props = defineProps<{
     users: User[];
     currentUser: User;
     currentLists: TodoList[];
     lists: TodoList[];
 }>();
+const { users } = toRefs(props);
 
-const form = useForm<{ title: string; description: string; priority: Priority; assignedTo: User[]; selectedList: number; deadline: string }>({
+const taskForm = useForm<{ title: string; description: string; priority: Priority; assignedTo: User[]; selectedList: number; deadline: string }>({
     title: '',
     description: '',
     priority: 'Niedrig',
@@ -20,15 +26,35 @@ const form = useForm<{ title: string; description: string; priority: Priority; a
     selectedList: 0,
     deadline: '',
 });
+const listForm = useForm<{ name: string; assignedTo: User[] }>({
+    name: '',
+    assignedTo: [],
+});
+
+const possibleUsers = computed(() => users.value.filter(u => u.todo_lists.filter(l => l.id == taskForm.selectedList).length != 0));
+// console.log(users);
 
 function addListItem() {
-    form.transform(data => ({
+    taskForm.transform(data => ({
         ...data,
         priority: getPriorityNumber(data.priority),
-        assignedTo: form.assignedTo.map(a => a.id),
+        assignedTo: taskForm.assignedTo.map(a => a.id),
     }));
-    form.post(route('storeTodo'));
+    taskForm.post(route('storeTodo'));
 }
+function addList() {
+    listForm.transform(data => ({
+        ...data,
+        assignedTo: listForm.assignedTo.map(a => a.id),
+    }));
+    listForm.post(route('storeList'));
+}
+
+const itemModalOpen = ref(false);
+watch(itemModalOpen, () => taskForm.reset());
+
+const listModalOpen = ref(false);
+watch(listModalOpen, () => listForm.reset());
 </script>
 <template>
     <Head title="Dashboard" />
@@ -37,11 +63,13 @@ function addListItem() {
             <a href="#" class="list-group-item list-group-item-action list-group-item-secondary d-flex justify-content-between">
                 Fügen Sie etwas zur Liste hinzu:
                 <Modal
-                    :affirm="{ class: 'btn btn-success', text: 'Hinzufügen', action: addListItem }"
+                    v-model="itemModalOpen"
+                    :affirm="{ class: 'btn btn-success ', text: 'Hinzufügen', action: addListItem }"
                     :negative="{ class: 'btn btn-danger', text: 'Abbrechen' }"
                 >
-                    <TextInput placeholder="Titel" v-model="form.title"></TextInput>
-                    <TextareaInput placeholder="Beschreibung" v-model="form.description"></TextareaInput>
+                    <!-- <form @submit="preve"></form> -->
+                    <TextInput placeholder="Titel" v-model="taskForm.title" min="10" required></TextInput>
+                    <TextareaInput placeholder="Beschreibung" v-model="taskForm.description"></TextareaInput>
                     <div class="mt-2">Priorität:</div>
                     <RadioGroup
                         :options="[
@@ -49,20 +77,41 @@ function addListItem() {
                             { text: 'Mittel', value: 'Mittel' },
                             { text: 'Niedrig', value: 'Niedrig' },
                         ]"
-                        v-model="form.priority"
+                        v-model="taskForm.priority"
                     ></RadioGroup>
                     <div class="mt-2">Fertig bis:</div>
-                    <DateInput v-model="form.deadline"></DateInput>
+                    <DateInput v-model="taskForm.deadline"></DateInput>
                     <SelectInput
                         showAll
                         placeholder="Liste"
                         :options="currentLists"
-                        @selectItem="e => (form.selectedList = e.id)"
+                        @selectItem="e => (taskForm.selectedList = e.id)"
                         :optionProjection="e => e.name + ''"
                     ></SelectInput>
-                    <div class="mt-2">Zugewiesene Benutzer*innen:</div>
+                    <div class="mt-2">Zugewiesene Benutzer:</div>
+
                     <MultiSelectInput
-                        v-model:selected="form.assignedTo"
+                        v-model:selected="taskForm.assignedTo"
+                        placeholder="Zuweisung"
+                        :options="possibleUsers"
+                        :optionProjection="e => e.name"
+                    ></MultiSelectInput>
+                    <template #button><Button>Hinzufügen</Button></template>
+                </Modal>
+            </a>
+        </div>
+        <div v-if="currentUser.role == 'admin'" class="list-group my-3">
+            <a href="#" class="list-group-item list-group-item-action list-group-item-secondary d-flex justify-content-between">
+                Fügen Sie eine Liste hinzu:
+                <Modal
+                    v-model="listModalOpen"
+                    :affirm="{ class: 'btn btn-success ', text: 'Hinzufügen', action: addList }"
+                    :negative="{ class: 'btn btn-danger', text: 'Abbrechen' }"
+                >
+                    <TextInput placeholder="List Name" v-model="listForm.name"></TextInput>
+                    <div class="mt-2">Zugewiesene Benutzer:</div>
+                    <MultiSelectInput
+                        v-model:selected="listForm.assignedTo"
                         placeholder="Zuweisung"
                         :options="users"
                         :optionProjection="e => e.name"
@@ -71,43 +120,12 @@ function addListItem() {
                 </Modal>
             </a>
         </div>
-        <!-- <div class="row"> -->
         <template v-for="list of currentLists">
-            <div class="my-3 card text-black text-center" style="background-color: #fd7e14">-{{ list.name }}-</div>
-            <div class="my-3" style="max-height: max-content" v-for="todo of list.todos">
-                <Modal :title="todo.title">
-                    <div id="task">
-                        <div class="w-50">{{ todo.description }}</div>
-                        <div>Abgabedatum: {{ todo.deadline }}</div>
-
-                        <Button v-if="!todo.assignedTo.find(e => e.id == currentUser.id)">Zuordnen</Button>
-                        <Button v-if="todo.assignedTo.find(e => e.id == currentUser.id)">Verlassen</Button>
-                    </div>
-                    <template #button>
-                        <div
-                            class="card text-white"
-                            :class="{
-                                'bg-warning': todo.priority == 2,
-                                'bg-success': todo.priority == 1,
-                                'bg-danger': todo.priority == 3,
-                            }"
-                        >
-                            <div class="card-header fw-bold">
-                                {{ todo.state == 'Finished' ? '✔️' : todo.state == 'InWork' ? '⚙️' : '❌' }}
-                                {{ todo.title }}
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">{{ todo.description }}{{ todo.description }}</p>
-                            </div>
-                            <div class="card-footer" v-if="todo.assignedTo.length > 0">
-                                Zugewiesene Benutzer*in: {{ todo.assignedTo.map(a => a.name).join(', ') }}
-                            </div>
-                        </div>
-                    </template>
-                </Modal>
+            <ShowList :list="list" :current-user="currentUser" :users="users"></ShowList>
+            <div v-for="todo of list.todos" class="my-3" style="max-height: max-content">
+                <ShowTask :todo="todo" :current-user="currentUser"></ShowTask>
             </div>
         </template>
-
         <!-- </div> -->
     </AuthenticatedLayout>
 </template>

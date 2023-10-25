@@ -36,3 +36,7 @@ Route::controller(ToDoController::class)->middleware("auth")->group(function () 
 Route::controller(ListController::class)->middleware("auth")->group(function () {
     Route::post('/storeList', 'store')->name('storeList');
 });
+
+Route::controller(ListController::class)->middleware("auth")->group(function () {
+    Route::post('/syncUserList/{todoList}', 'syncUser')->name('syncUserList');
+});

@@ -4,7 +4,7 @@ export interface User {
     email: string;
     email_verified_at: string;
     role: 'admin' | 'user' | 'readOnly';
-    todoLists: TodoList[];
+    todo_lists: TodoList[];
 }
 export type TodoItem = {
     id: number;
@@ -19,6 +19,7 @@ export type TodoItem = {
 export type TodoList = {
     id: number;
     todos: TodoItem[];
+    // assignedTo: User[];
     name: string;
 };
 
