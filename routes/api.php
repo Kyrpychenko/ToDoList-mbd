@@ -40,3 +40,7 @@ Route::controller(ListController::class)->middleware("auth")->group(function () 
 Route::controller(ListController::class)->middleware("auth")->group(function () {
     Route::post('/syncUserList/{todoList}', 'syncUser')->name('syncUserList');
 });
+
+Route::controller(ToDoController::class)->middleware("auth")->group(function () {
+    Route::post('/syncUserTodo/{todoItem}', 'syncUser')->name('syncUserTodo');
+});

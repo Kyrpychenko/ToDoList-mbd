@@ -1,25 +1,57 @@
 <script setup lang="ts">
 import { Modal } from 'custom-mbd-components';
-import { TodoItem, User } from '@/types';
+import { TodoItem, TodoList, User } from '@/types';
+import { useForm } from '@inertiajs/vue3';
+import { toRefs } from 'vue';
 
 const props = defineProps<{
+    users: User[];
     todo: TodoItem;
     currentUser: User;
+    list: TodoList;
+    // todos: TodoItem[];
 }>();
+const { todo, currentUser } = toRefs(props);
+
+const assignedUserForm = useForm<{ assignedTo: User[] }>({
+    assignedTo: todo.value.todo_item_user,
+});
+
+function addUserToItem() {
+    console.log('test');
+    assignedUserForm.assignedTo.push(currentUser.value);
+    assignedUserForm.transform(data => ({
+        ...data,
+        assignedTo: assignedUserForm.assignedTo.map(a => a.id),
+    }));
+    assignedUserForm.post(route('syncUserTodo', todo.value.id), { preserveScroll: true });
+}
+
+function delUserFromItem() {
+    console.log('test');
+    assignedUserForm.transform(data => ({
+        ...data,
+        assignedTo: assignedUserForm.assignedTo.filter(u => u.id !== currentUser.value.id).map(a => a.id),
+    }));
+    assignedUserForm.post(route('syncUserTodo', todo.value.id), { preserveScroll: true });
+}
 </script>
 
 <template>
     <div>
+        <!-- {{ assignedUserForm.assignedTo }} -->
         <Modal
             :title="todo.title"
             :affirm="{
                 class: 'btn btn-success ',
                 text: 'Zuordnen',
+                action: () => addUserToItem(),
                 disabled: !!todo.todo_item_user.find(e => e.id == currentUser.id),
             }"
             :negative="{
                 class: 'btn btn-danger',
                 text: 'Verlassen',
+                action: () => delUserFromItem(),
                 disabled: !todo.todo_item_user.find(e => e.id == currentUser.id),
             }"
         >

@@ -23,6 +23,7 @@
         "vue-tsc": "^1.2.0"
     },
     "dependencies": {
+        "bootstrap-icons": "^1.11.1",
         "custom-mbd-components": "github:MBD-Team/CustomMBDComponents"
     }
 }

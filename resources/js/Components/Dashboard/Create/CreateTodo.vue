@@ -8,8 +8,10 @@ import { toRefs } from 'vue';
 import { watch } from 'vue';
 
 const props = defineProps<{
+    lists: TodoList[];
     users: User[];
     currentLists: TodoList[];
+    currentuser: User;
 }>();
 const { users } = toRefs(props);
 
@@ -22,7 +24,7 @@ function addListItem() {
         priority: getPriorityNumber(data.priority),
         assignedTo: todoForm.assignedTo.map(a => a.id),
     }));
-    todoForm.post(route('storeTodo'));
+    todoForm.post(route('storeTodo'), { preserveScroll: true });
 }
 
 const possibleUsers = computed(() => users.value.filter(u => u.todo_lists.filter(l => l.id == todoForm.selectedList).length != 0));
@@ -62,7 +64,7 @@ const todoForm = useForm<{ title: string; description: string; priority: Priorit
                 <SelectInput
                     showAll
                     placeholder="Liste"
-                    :options="currentLists"
+                    :options="currentuser.role === 'admin' ? lists : currentLists"
                     @selectItem="e => (todoForm.selectedList = e.id)"
                     :optionProjection="e => e.name + ''"
                 ></SelectInput>

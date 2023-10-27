@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
-use Inertia\Response;
 use App\Models\TodoItem;
 use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
 
 class ToDoController extends Controller
 {
@@ -32,6 +29,19 @@ class ToDoController extends Controller
             'todo_list_id' => $validated['selectedList']
         ]);
         $todoItem->todoItemUser()->attach($validated['assignedTo']);
+        return back();
+    }
+
+    public function syncUser(Request $request, TodoItem $todoItem)
+    {
+        $validated = $request->validate([
+            'assignedTo' => 'array',
+            'assignedTo*.' => 'integer|exists:users,id',
+        ]);
+
+        dd($todoItem);
+        $todoItem->todoItemUser()->sync($validated['assignedTo']);
+
         return back();
     }
 }

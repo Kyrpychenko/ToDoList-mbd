@@ -22,7 +22,7 @@ function syncUserList(list: TodoList) {
         ...data,
         assignedTo: assignUserForm.assignedTo.map(a => a.id),
     }));
-    assignUserForm.post(route('syncUserList', list.id));
+    assignUserForm.post(route('syncUserList', list.id), { preserveScroll: true });
     // assignUserForm.reset();
 }
 </script>

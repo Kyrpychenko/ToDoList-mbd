@@ -43,7 +43,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    public function todos()
+    public function todoItems()
     {
         return $this->belongsToMany(TodoItem::class);
     }

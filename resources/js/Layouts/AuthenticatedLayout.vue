@@ -10,7 +10,7 @@ const user = usePage().props.auth.user;
 </script>
 
 <template>
-    <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+    <nav class="navbar navbar-dark navbar-expand-lg" style="background-color: #001219">
         <div class="container d-flex">
             <Link :href="route('Dashboard')" class="me-3">
                 <ApplicationLogo style="height: 2.25rem; fill: currentColor; color: rgb(31 41 55); filter: invert(1)" />
@@ -31,13 +31,10 @@ const user = usePage().props.auth.user;
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">
                             <NavLink :href="route('Dashboard')" :active="route().current('dashboard')" class="text-decoration-none text-light">
-                                Startseite
+                                <i style="font-size: 1.5rem" class="bi bi-house-door-fill"></i>
                             </NavLink>
                             <NavLink :href="route('lists')" :active="route().current('lists')" class="text-decoration-none text-light">
                                 Listen
-                            </NavLink>
-                            <NavLink :href="route('chirps.index')" :active="route().current('chirps.index')" class="text-decoration-none text-light">
-                                Chirps
                             </NavLink>
                         </a>
                     </li>

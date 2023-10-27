@@ -23,7 +23,7 @@ function addList() {
         ...data,
         assignedTo: listForm.assignedTo.map(a => a.id),
     }));
-    listForm.post(route('storeList'));
+    listForm.post(route('storeList'), { preserveScroll: true });
 }
 </script>
 
@@ -41,7 +41,7 @@ function addList() {
                 <MultiSelectInput
                     v-model:selected="listForm.assignedTo"
                     placeholder="Zuweisung"
-                    :options="users"
+                    :options="users.filter(u => u.role !== 'admin')"
                     :optionProjection="e => e.name"
                 ></MultiSelectInput>
                 <template #button><Button>Hinzufügen</Button></template>
