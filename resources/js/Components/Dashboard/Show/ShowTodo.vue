@@ -42,7 +42,15 @@ const syncStateTdoForm = useForm<{ state: 'Unstarted' | 'InWork' | 'Finished' }>
 
 function syncStateTodo() {
     console.log(syncStateTdoForm);
-    syncStateTdoForm.state = 'Finished';
+    syncStateTdoForm.state =
+        syncStateTdoForm.state == 'Unstarted'
+            ? 'InWork'
+            : syncStateTdoForm.state == 'InWork'
+            ? 'Finished'
+            : syncStateTdoForm.state == 'Finished'
+            ? 'InWork'
+            : 'Unstarted';
+
     syncStateTdoForm.post(route('syncStateTodo', todo.value.id), { preserveScroll: true });
 }
 </script>
@@ -52,7 +60,12 @@ function syncStateTodo() {
         <!-- {{ assignedUserForm.assignedTo }} -->
         <Modal
             :title="todo.title"
-            :affirm-alt="{ text: 'Fertig', action: () => syncStateTodo(), class: 'btn btn-dark ' }"
+            :affirm-alt="{
+                text:
+                    todo.state == 'Unstarted' ? 'Start' : todo.state == 'InWork' ? 'Fertig' : todo.state == 'Finished' ? 'Weiter Arbeiten' : 'Fertig',
+                action: () => syncStateTodo(),
+                class: 'btn btn-dark ',
+            }"
             :affirm="{
                 class: 'btn btn-success ',
                 text: 'Zuordnen',
@@ -68,11 +81,17 @@ function syncStateTodo() {
         >
             <div id="todo">
                 <div class="w-50">
-                    Todo erstellt von:{{ todo.owner }}
-                    <br />
-                    {{ todo.description }}
+                    <div>Todo erstellt von:</div>
+                    <div class="ms-3">
+                        {{ todo.owner }}
+                    </div>
+                    <div class="mt-3">Ziel des Todos:</div>
+                    <div class="ms-3">
+                        {{ todo.description }}
+                    </div>
                 </div>
-                <div>Abgabedatum: {{ todo.deadline }}</div>
+                <div class="mt-3">Abgabedatum:</div>
+                <div class="ms-3">{{ todo.deadline }}</div>
             </div>
             <template #button>
                 <div

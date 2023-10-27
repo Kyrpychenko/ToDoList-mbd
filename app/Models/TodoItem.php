@@ -14,6 +14,7 @@ class TodoItem extends Model
     protected $fillable = [
         'title',
         'description',
+        'owner',
         'priority',
         'todo_list_id',
         'deadline',

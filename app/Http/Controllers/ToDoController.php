@@ -10,15 +10,16 @@ class ToDoController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request);
         $validated = $request->validate([
             'title' => 'required|string',
             'description' => 'required|string',
-            'owner' => 'required|sting',
+            'owner' => 'required|string',
             'priority' => 'required|in:1,2,3',
             'assignedTo' => 'array',
             'assignedTo*.' => 'integer|exists:users,id',
             'selectedList' => 'integer|exists:todo_lists,id',
-            'deadline' => 'required|date',
+            'deadline' => 'date',
 
         ]);
         $todoItem = TodoItem::create([

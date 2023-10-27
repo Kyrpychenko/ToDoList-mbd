@@ -13,7 +13,7 @@ const props = defineProps<{
     currentLists: TodoList[];
     currentuser: User;
 }>();
-const { users } = toRefs(props);
+const { users, currentuser } = toRefs(props);
 
 const itemModalOpen = ref(false);
 watch(itemModalOpen, () => todoForm.reset());
@@ -25,13 +25,23 @@ function addListItem() {
         assignedTo: todoForm.assignedTo.map(a => a.id),
     }));
     todoForm.post(route('storeTodo'), { preserveScroll: true });
+    // console.log(todoForm);
 }
 
 const possibleUsers = computed(() => users.value.filter(u => u.todo_lists.filter(l => l.id == todoForm.selectedList).length != 0));
 
-const todoForm = useForm<{ title: string; description: string; priority: Priority; assignedTo: User[]; selectedList: number; deadline: string }>({
+const todoForm = useForm<{
+    title: string;
+    description: string;
+    priority: Priority;
+    assignedTo: User[];
+    selectedList: number;
+    deadline: string;
+    owner: string;
+}>({
     title: '',
     description: '',
+    owner: currentuser.value.name,
     priority: 'Niedrig',
     assignedTo: [],
     selectedList: 0,
@@ -44,7 +54,12 @@ const todoForm = useForm<{ title: string; description: string; priority: Priorit
             Fügen Sie etwas zur Liste hinzu:
             <Modal
                 v-model="itemModalOpen"
-                :affirm="{ class: 'btn btn-success ', text: 'Hinzufügen', action: addListItem }"
+                :affirm="{
+                    class: 'btn btn-success ',
+                    text: 'Hinzufügen',
+                    action: addListItem,
+                    disabled: !todoForm.title || !todoForm.description || !todoForm.priority || !todoForm.deadline || !todoForm.selectedList,
+                }"
                 :negative="{ class: 'btn btn-danger', text: 'Abbrechen' }"
             >
                 <!-- <form @submit="preve"></form> -->
