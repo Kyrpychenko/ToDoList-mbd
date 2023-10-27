@@ -18,6 +18,7 @@ class TodoListFactory extends Factory
     {
         return [
             'name' => fake()->words(5, true),
+            'type' => 'open'
 
         ];
     }

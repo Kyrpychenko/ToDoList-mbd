@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string("name");
+            $table->enum("type", ["open", "private", "admin"])->default("open");
         });
     }
 

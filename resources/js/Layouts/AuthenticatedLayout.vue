@@ -65,8 +65,8 @@ const user = usePage().props.auth.user;
             </div>
         </div>
     </nav>
+    <Menu />
     <main class="container pt-4">
         <slot />
     </main>
-    <Menu></Menu>
 </template>
