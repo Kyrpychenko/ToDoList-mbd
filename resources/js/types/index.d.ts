@@ -10,6 +10,7 @@ export type TodoItem = {
     id: number;
     title: string;
     description: string;
+    owner: string;
     state: 'Unstarted' | 'InWork' | 'Finished';
     listId: number;
     priority: 1 | 2 | 3;

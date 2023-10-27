@@ -16,11 +16,11 @@ return new class extends Migration
             $table->timestamps();
             $table->string("title");
             $table->string("description");
+            $table->string("owner");
             $table->foreignId('todo_list_id')->constrained()->onDelete('restrict')->onUpdate('cascade');
             $table->enum("priority", ["1", "2", "3"])->default("1");
             $table->enum("state", ["Unstarted", "InWork", "Finished"])->default("Unstarted");
             $table->string("deadline")->nullable();
-            // $table->string("deadline")->default("1970-01-01");
         });
     }
 

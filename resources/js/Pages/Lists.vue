@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ShowList from '@/Components/Dashboard/Show/ShowList.vue';
+import ShowTodo from '@/Components/Dashboard/Show/ShowTodo.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { TodoList, User } from '@/types';
 import { computed, toRefs } from 'vue';
@@ -18,17 +18,17 @@ const displateLists = computed(() => (currentUser.value.role == 'admin' ? lists.
 <template>
     <AuthenticatedLayout>
         <template v-for="list of displateLists">
-            <ShowList :list="list" :current-user="currentUser" :users="users" />
-            <!-- {{ list.todo_items[0] }} -->
-            <ShowTodo
-                v-for="todo of list.todo_items"
-                :todo="todo"
-                :users="users"
-                :current-user="currentUser"
-                :list="list"
-                class="my-3"
-                style="max-height: max-content"
-            />
+            <div v-for="todo of list.todo_items.filter(t => t.todo_item_user.filter(u => (u.id = currentUser.id)))">
+                <ShowTodo
+                    v-if="todo.todo_item_user.find(e => e.id == currentUser.id)"
+                    :todo="todo"
+                    :users="users"
+                    :current-user="currentUser"
+                    :list="list"
+                    class="my-3"
+                    style="max-height: max-content"
+                />
+            </div>
         </template>
     </AuthenticatedLayout>
 </template>

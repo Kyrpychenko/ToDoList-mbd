@@ -16,7 +16,8 @@ class TodoItem extends Model
         'description',
         'priority',
         'todo_list_id',
-        'deadline'
+        'deadline',
+        'state'
     ];
 
     public function todoList(): BelongsTo

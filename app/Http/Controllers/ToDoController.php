@@ -7,13 +7,13 @@ use Illuminate\Http\Request;
 
 class ToDoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */ public function store(Request $request)
+
+    public function store(Request $request)
     {
         $validated = $request->validate([
             'title' => 'required|string',
             'description' => 'required|string',
+            'owner' => 'required|sting',
             'priority' => 'required|in:1,2,3',
             'assignedTo' => 'array',
             'assignedTo*.' => 'integer|exists:users,id',
@@ -24,6 +24,7 @@ class ToDoController extends Controller
         $todoItem = TodoItem::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
+            'owner' => $validated['owner'],
             'priority' => $validated['priority'],
             'deadline' => $validated['deadline'],
             'todo_list_id' => $validated['selectedList']
@@ -38,9 +39,17 @@ class ToDoController extends Controller
             'assignedTo' => 'array',
             'assignedTo*.' => 'integer|exists:users,id',
         ]);
-
-        dd($todoItem);
         $todoItem->todoItemUser()->sync($validated['assignedTo']);
+
+        return back();
+    }
+    public function syncState(Request $request, TodoItem $todoItem)
+    {
+        $validated = $request->validate([
+            'state' =>  'string',
+        ]);
+        $todoItem->update(['state' => $validated['state']]);
+        // dd($todoItem);
 
         return back();
     }

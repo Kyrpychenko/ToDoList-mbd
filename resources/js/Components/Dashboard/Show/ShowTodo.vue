@@ -9,7 +9,7 @@ const props = defineProps<{
     todo: TodoItem;
     currentUser: User;
     list: TodoList;
-    // todos: TodoItem[];
+    // todoItems: TodoItem[];
 }>();
 const { todo, currentUser } = toRefs(props);
 
@@ -35,6 +35,16 @@ function delUserFromItem() {
     }));
     assignedUserForm.post(route('syncUserTodo', todo.value.id), { preserveScroll: true });
 }
+
+const syncStateTdoForm = useForm<{ state: 'Unstarted' | 'InWork' | 'Finished' }>({
+    state: todo.value.state,
+});
+
+function syncStateTodo() {
+    console.log(syncStateTdoForm);
+    syncStateTdoForm.state = 'Finished';
+    syncStateTdoForm.post(route('syncStateTodo', todo.value.id), { preserveScroll: true });
+}
 </script>
 
 <template>
@@ -42,6 +52,7 @@ function delUserFromItem() {
         <!-- {{ assignedUserForm.assignedTo }} -->
         <Modal
             :title="todo.title"
+            :affirm-alt="{ text: 'Fertig', action: () => syncStateTodo(), class: 'btn btn-dark ' }"
             :affirm="{
                 class: 'btn btn-success ',
                 text: 'Zuordnen',
@@ -56,7 +67,11 @@ function delUserFromItem() {
             }"
         >
             <div id="todo">
-                <div class="w-50">{{ todo.description }}</div>
+                <div class="w-50">
+                    Todo erstellt von:{{ todo.owner }}
+                    <br />
+                    {{ todo.description }}
+                </div>
                 <div>Abgabedatum: {{ todo.deadline }}</div>
             </div>
             <template #button>

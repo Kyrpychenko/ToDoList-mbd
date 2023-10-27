@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import ApplicationLogo from '@/Components/Defaults/ApplicationLogo.vue';
+import Menu from '@/Components/Menu.vue';
 import DropdownLink from '@/Components/Defaults/DropdownLink.vue';
 import NavLink from '@/Components/Defaults/NavLink.vue';
 import { Link, usePage } from '@inertiajs/vue3';
@@ -34,7 +35,7 @@ const user = usePage().props.auth.user;
                                 <i style="font-size: 1.5rem" class="bi bi-house-door-fill"></i>
                             </NavLink>
                             <NavLink :href="route('lists')" :active="route().current('lists')" class="text-decoration-none text-light">
-                                Listen
+                                <i style="font-size: 1.4rem" class="bi bi-clipboard"></i>
                             </NavLink>
                         </a>
                     </li>
@@ -67,4 +68,5 @@ const user = usePage().props.auth.user;
     <main class="container pt-4">
         <slot />
     </main>
+    <Menu></Menu>
 </template>
