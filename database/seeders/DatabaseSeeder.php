@@ -41,8 +41,8 @@ class DatabaseSeeder extends Seeder
             )
             ->create([]);
 
-        $admin->todos()->attach(\App\Models\TodoItem::limit(5)->get());
-        $user->todos()->attach(\App\Models\TodoItem::offset(3)->limit(5)->get());
+        $admin->todoItems()->attach(\App\Models\TodoItem::limit(5)->get());
+        $user->todoItems()->attach(\App\Models\TodoItem::offset(3)->limit(5)->get());
 
         $admin->todoLists()->attach(\App\Models\TodoList::limit(5)->get());
         $user->todoLists()->attach(\App\Models\TodoList::offset(3)->limit(5)->get());

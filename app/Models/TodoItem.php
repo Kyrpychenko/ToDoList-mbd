@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TodoItem extends Model
 {
@@ -15,8 +14,11 @@ class TodoItem extends Model
     protected $fillable = [
         'title',
         'description',
+        'owner',
         'priority',
-        'todo_list_id'
+        'todo_list_id',
+        'deadline',
+        'state'
     ];
 
     public function todoList(): BelongsTo

@@ -4,20 +4,22 @@ export interface User {
     email: string;
     email_verified_at: string;
     role: 'admin' | 'user' | 'readOnly';
-    todoLists: TodoList[];
+    todo_lists: TodoList[];
 }
 export type TodoItem = {
     id: number;
     title: string;
     description: string;
-    state: 'in work' | 'completed' | '';
+    owner: string;
+    state: 'Unstarted' | 'InWork' | 'Finished';
     listId: number;
     priority: 1 | 2 | 3;
-    assignedTo: User[];
+    todo_item_user: User[];
+    deadline: string;
 };
 export type TodoList = {
     id: number;
-    todos: TodoItem[];
+    todo_items: TodoItem[];
     name: string;
 };
 

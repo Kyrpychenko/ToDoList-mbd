@@ -1,96 +1,40 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Button, Modal, TextInput, SelectInput, TextareaInput, RadioGroup, MultiSelectInput } from 'custom-mbd-components';
-import { Head, useForm } from '@inertiajs/vue3';
+import ShowTodo from '@//Components/Dashboard/Show/ShowTodo.vue';
+import ShowList from '@/Components/Dashboard/Show/ShowList.vue';
+import CreateList from '@/Components/Dashboard/Create/CreateList.vue';
+import CreateTodo from '@/Components/Dashboard/Create/CreateTodo.vue';
+import { Head } from '@inertiajs/vue3';
 import { TodoList, User } from '@/types';
-import { getPriorityNumber, Priority } from '@/utility';
-defineProps<{
+import { toRefs } from 'vue';
+import { computed } from 'vue';
+
+const props = defineProps<{
     users: User[];
     currentUser: User;
     currentLists: TodoList[];
     lists: TodoList[];
 }>();
-
-const form = useForm<{ title: string; description: string; priority: Priority; assignedTo: User[]; selectedList: number }>({
-    title: '',
-    description: '',
-    priority: 'Niedrig',
-    assignedTo: [],
-    selectedList: 0,
-});
-
-function addListItem() {
-    console.log('klappt');
-    form.transform(data => ({ ...data, priority: getPriorityNumber(data.priority), assignedTo: form.assignedTo.map(a => a.id) }));
-    form.post(route('storeTodo'));
-}
+const { users, currentUser, currentLists, lists } = toRefs(props);
+const displateLists = computed(() => (currentUser.value.role === 'admin' ? lists.value : currentLists.value));
 </script>
 <template>
     <Head title="Dashboard" />
     <AuthenticatedLayout>
-        <div class="list-group">
-            <a href="#" class="list-group-item list-group-item-action list-group-item-secondary d-flex justify-content-between">
-                Fügen Sie etwas zur Liste hinzu:
-                <Modal
-                    :affirm="{ class: 'btn btn-success', text: 'Hinzufügen', action: addListItem }"
-                    :negative="{ class: 'btn btn-danger', text: 'Abbrechen' }"
-                >
-                    <TextInput placeholder="Titel" v-model="form.title"></TextInput>
-                    <div>Priorität:</div>
-                    <RadioGroup
-                        :options="[
-                            { text: 'Hoch', value: 'Hoch' },
-                            { text: 'Mittel', value: 'Mittel' },
-                            { text: 'Niedrig', value: 'Niedrig' },
-                        ]"
-                        v-model="form.priority"
-                    ></RadioGroup>
-
-                    <MultiSelectInput
-                        v-model:selected="form.assignedTo"
-                        placeholder="Zuweisung"
-                        :options="users"
-                        :optionProjection="e => e.name"
-                    ></MultiSelectInput>
-                    <TextareaInput placeholder="Beschreibung" v-model="form.description"></TextareaInput>
-                    <SelectInput
-                        showAll
-                        placeholder="Welche Liste"
-                        :options="lists"
-                        @selectItem="e => (form.selectedList = e.id)"
-                        :optionProjection="e => e.name + ''"
-                    ></SelectInput>
-                    <template #button><Button>Hinzufügen</Button></template>
-                </Modal>
-            </a>
-        </div>
-        <div class="row">
-            <template v-for="list of currentLists">
-                <div class="col-3 my-1" style="max-height: max-content" v-for="todo of list.todos">
-                    <Modal :title="todo.title">
-                        <div>
-                            <div class="w-50">{{ todo.description }}</div>
-                            <div>Abgabedatum:</div>
-                        </div>
-                        <template #button>
-                            <div
-                                class="card text-white"
-                                :class="{
-                                    'bg-warning': todo.priority == 2,
-                                    'bg-success': todo.priority == 1,
-                                    'bg-danger': todo.priority == 3,
-                                }"
-                            >
-                                <div class="card-header fw-bold">⚙️ {{ todo.title }}</div>
-                                <div class="card-body">
-                                    <p class="card-text">{{ todo.description }}{{ todo.description }}</p>
-                                </div>
-                                <div class="card-footer" v-if="todo.assignedTo.length > 0">{{ todo.assignedTo.map(a => a.name).join(', ') }}</div>
-                            </div>
-                        </template>
-                    </Modal>
-                </div>
-            </template>
-        </div>
+        <CreateList :users="users" :current-user="currentUser" />
+        <CreateTodo :users="users" :current-lists="currentLists" :currentuser="currentUser" :lists="lists" />
+        <template v-for="list of displateLists">
+            <ShowList :list="list" :current-user="currentUser" :users="users" />
+            <!-- {{ list.todo_items[0] }} -->
+            <ShowTodo
+                v-for="todo of list.todo_items"
+                :todo="todo"
+                :users="users"
+                :current-user="currentUser"
+                :list="list"
+                class="my-3"
+                style="max-height: max-content"
+            />
+        </template>
     </AuthenticatedLayout>
 </template>
