@@ -2,8 +2,6 @@
 import { Modal, MultiSelectInput } from 'custom-mbd-components';
 import { useForm } from '@inertiajs/vue3';
 import { TodoList, User } from '@/types';
-import { Priority } from '@/utility';
-import { computed, ref } from 'vue';
 import { toRefs } from 'vue';
 
 const props = defineProps<{

@@ -14,7 +14,7 @@ class ToDoController extends Controller
         $validated = $request->validate([
             'title' => 'required|string',
             'description' => 'required|string',
-            'owner' => 'required|string',
+            'user_id' => 'integer|exists:users,id',
             'priority' => 'required|in:1,2,3',
             'assignedTo' => 'array',
             'assignedTo*.' => 'integer|exists:users,id',
@@ -25,7 +25,7 @@ class ToDoController extends Controller
         $todoItem = TodoItem::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
-            'owner' => $validated['owner'],
+            'user_id' => $validated['user_id'],
             'priority' => $validated['priority'],
             'deadline' => $validated['deadline'],
             'todo_list_id' => $validated['selectedList']

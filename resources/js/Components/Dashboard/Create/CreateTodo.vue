@@ -37,11 +37,11 @@ const todoForm = useForm<{
     assignedTo: User[];
     selectedList: number;
     deadline: string;
-    owner: string;
+    user_id: number;
 }>({
     title: '',
     description: '',
-    owner: currentuser.value.name,
+    user_id: currentuser.value.id,
     priority: 'Niedrig',
     assignedTo: [],
     selectedList: 0,

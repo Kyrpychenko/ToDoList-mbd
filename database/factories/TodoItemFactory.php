@@ -18,7 +18,7 @@ class TodoItemFactory extends Factory
     {
         return [
             'title' => fake()->words(5, true),
-            'owner' => fake()->name(),
+            'user_id' => 1,
             'description' => fake()->words(10, true),
             'deadline' => fake()->date()
         ];
