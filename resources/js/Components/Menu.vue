@@ -2,8 +2,8 @@
 export const filter = 'none';
 </script>
 <template>
-    <div class="left-menu position-absolute top-10 h-100 bg-light text-dark" style="width: 240px; padding: 10px">
-        <ul>
+    <div class="h-100 position-sticky top-0 ms-2 bg-light" style="width: 240px; z-index: -1">
+        <ul class="list-unstyled">
             <li>Text goes here</li>
         </ul>
     </div>
@@ -18,6 +18,7 @@ export const filter = 'none';
 .left-menu li {
     cursor: pointer;
     margin-bottom: 10px;
+    padding: 10px;
 }
 
 .left-menu li:hover {

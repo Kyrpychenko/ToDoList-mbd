@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
                 \App\Models\TodoItem::factory()->count(3)
             )
             ->create([]);
-
+  
         $admin->todoItems()->attach(\App\Models\TodoItem::limit(5)->get());
         $user->todoItems()->attach(\App\Models\TodoItem::offset(3)->limit(5)->get());
 

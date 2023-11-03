@@ -18,7 +18,6 @@ const assignedUserForm = useForm<{ assignedTo: User[] }>({
 });
 
 function addUserToItem() {
-    console.log('test');
     assignedUserForm.assignedTo.push(currentUser.value);
     assignedUserForm.transform(data => ({
         ...data,
@@ -28,7 +27,6 @@ function addUserToItem() {
 }
 
 function delUserFromItem() {
-    console.log('test');
     assignedUserForm.transform(data => ({
         ...data,
         assignedTo: assignedUserForm.assignedTo.filter(u => u.id !== currentUser.value.id).map(a => a.id),
@@ -41,7 +39,6 @@ const syncStateTdoForm = useForm<{ state: 'Unstarted' | 'InWork' | 'Finished' }>
 });
 
 function syncStateTodo() {
-    console.log(syncStateTdoForm);
     syncStateTdoForm.state =
         syncStateTdoForm.state == 'Unstarted'
             ? 'InWork'
