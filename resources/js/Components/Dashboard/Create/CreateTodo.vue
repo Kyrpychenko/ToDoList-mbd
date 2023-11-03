@@ -11,9 +11,9 @@ const props = defineProps<{
     lists: TodoList[];
     users: User[];
     currentLists: TodoList[];
-    currentuser: User;
+    currentUser: User;
 }>();
-const { users, currentuser } = toRefs(props);
+const { users, currentUser } = toRefs(props);
 
 const itemModalOpen = ref(false);
 watch(itemModalOpen, () => todoForm.reset());
@@ -41,7 +41,7 @@ const todoForm = useForm<{
 }>({
     title: '',
     description: '',
-    user_id: currentuser.value.id,
+    user_id: currentUser.value.id,
     priority: 'Niedrig',
     assignedTo: [],
     selectedList: 0,
@@ -79,7 +79,7 @@ const todoForm = useForm<{
                 <SelectInput
                     showAll
                     placeholder="Liste"
-                    :options="currentuser.role === 'admin' ? lists : currentLists"
+                    :options="currentUser.role === 'admin' ? lists : currentLists"
                     @selectItem="e => (todoForm.selectedList = e.id)"
                     :optionProjection="e => e.name + ''"
                 ></SelectInput>
