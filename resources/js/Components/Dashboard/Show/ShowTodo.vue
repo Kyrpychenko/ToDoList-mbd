@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { Modal } from 'custom-mbd-components';
+import { Button, Modal, TextInput, MultiSelectInput, DateInput } from 'custom-mbd-components';
 import { TodoItem, TodoList, User } from '@/types';
 import { useForm } from '@inertiajs/vue3';
 import { toRefs } from 'vue';
+import { Priority } from '@/utility';
 
 const props = defineProps<{
     users: User[];
@@ -15,6 +16,20 @@ const { todo, currentUser } = toRefs(props);
 
 const assignedUserForm = useForm<{ assignedTo: User[] }>({
     assignedTo: todo.value.todo_item_user,
+});
+
+const syncTodoForm = useForm<{
+    title: string;
+    description: string;
+    priority: Priority;
+    assignedTo: User[];
+    deadline: string;
+}>({
+    title: todo.value.title,
+    description: todo.value.description,
+    priority: todo.value.priority == 1 ? 'Niedrig' : todo.value.priority == 2 ? 'Mittel' : 'Hoch',
+    assignedTo: todo.value.todo_item_user,
+    deadline: todo.value.deadline,
 });
 
 function addUserToItem() {
@@ -50,6 +65,10 @@ function syncStateTodo() {
 
     syncStateTdoForm.post(route('syncStateTodo', todo.value.id), { preserveScroll: true });
 }
+
+function syncTodo() {
+    syncTodoForm.post(route('syncTodo', todo.value.id), { preserveScroll: true });
+}
 </script>
 
 <template>
@@ -71,6 +90,8 @@ function syncStateTodo() {
             :negative="{
                 class: currentUser.id === todo.user_id ? 'btn btn-success ' : 'd-none',
                 text: 'Speichern',
+                disabled: !(todo.title.length >= 5 && todo.title.length <= 15),
+                action: () => syncTodo(),
             }"
         >
             <div id="todo">
@@ -79,13 +100,34 @@ function syncStateTodo() {
                     <div class="ms-3">
                         {{ users.find(u => u.id === todo.user_id)?.name }}
                     </div>
-                    <div class="mt-3">Ziel des Todos:</div>
-                    <div class="ms-3">
-                        {{ todo.description }}
+                    <div>
+                        <div v-if="currentUser.id === todo.user_id">
+                            <TextInput placeholder="Titel" v-model="syncTodoForm.title" />
+                        </div>
+                    </div>
+                    <div>
+                        <div v-if="currentUser.id === todo.user_id">
+                            <TextInput placeholder="Beschreibung" v-model="syncTodoForm.description" />
+                        </div>
+                        <div v-else>
+                            <div class="mt-3">Ziel des Todos:</div>
+                            <div class="ms-3">
+                                {{ todo.description }}
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div v-if="currentUser.id === todo.user_id">
+                            <DateInput placeholder="Abgabedatum" v-model="syncTodoForm.deadline" />
+                        </div>
+                        <div v-else>
+                            <div class="mt-3">Abgabedatum:</div>
+                            <div class="ms-3">
+                                {{ todo.deadline }}
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="mt-3">Abgabedatum:</div>
-                <div class="ms-3">{{ todo.deadline }}</div>
             </div>
             <template #button>
                 <div

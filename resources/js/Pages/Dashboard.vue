@@ -22,7 +22,7 @@ const displateLists = computed(() => (currentUser.value.role === 'admin' ? lists
     <Head title="Dashboard" />
     <AuthenticatedLayout>
         <CreateList :users="users" :current-user="currentUser" />
-        <CreateTodo :users="users" :current-lists="currentLists" :currentuser="currentUser" :lists="lists" />
+        <CreateTodo :users="users" :current-lists="currentLists" :currentUser="currentUser" :lists="lists" />
         <template v-for="list of displateLists">
             <ShowList :list="list" :current-user="currentUser" :users="users" />
             <!-- {{ list.todo_items[0] }} -->
