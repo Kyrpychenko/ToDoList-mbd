@@ -40,7 +40,6 @@ const user = usePage().props.auth.user;
                         </a>
                     </li>
                     <div class="flex-grow-1"></div>
-
                     <li class="nav-item dropdown d-flex justify-content-center align-items-center">
                         <a
                             class="nav-link dropdown-toggle text-light"
