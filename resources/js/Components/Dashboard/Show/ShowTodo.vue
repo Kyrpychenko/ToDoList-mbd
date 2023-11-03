@@ -67,23 +67,20 @@ function syncStateTodo() {
                 class: 'btn btn-dark ',
             }"
             :affirm="{
-                class: 'btn btn-success ',
-                text: 'Zuordnen',
-                action: () => addUserToItem(),
-                disabled: !!todo.todo_item_user.find(e => e.id == currentUser.id),
+                class: !todo.todo_item_user.find(e => e.id == currentUser.id) ? 'btn btn-success ' : 'btn btn-danger',
+                text: !todo.todo_item_user.find(e => e.id == currentUser.id) ? 'Zuordnen' : 'Verlassen',
+                action: !todo.todo_item_user.find(e => e.id == currentUser.id) ? () => addUserToItem() : () => delUserFromItem(),
             }"
             :negative="{
-                class: 'btn btn-danger',
-                text: 'Verlassen',
-                action: () => delUserFromItem(),
-                disabled: !todo.todo_item_user.find(e => e.id == currentUser.id),
+                class: currentUser.id === todo.user_id ? 'btn btn-success ' : 'd-none',
+                text: 'Speichern',
             }"
         >
             <div id="todo">
                 <div class="w-50">
                     <div>Todo erstellt von:</div>
                     <div class="ms-3">
-                        {{ todo.owner }}
+                        {{ users.find(u => u.id === todo.user_id)?.name }}
                     </div>
                     <div class="mt-3">Ziel des Todos:</div>
                     <div class="ms-3">
