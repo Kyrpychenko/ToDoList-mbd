@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, Modal, TextInput, SelectInput, TextareaInput, RadioGroup, MultiSelectInput, DateInput } from 'custom-mbd-components';
+import { Modal, TextInput, SelectInput, TextareaInput, RadioGroup, MultiSelectInput, DateInput } from 'custom-mbd-components';
 import { useForm } from '@inertiajs/vue3';
 import { TodoList, User } from '@/types';
 import { getPriorityNumber, Priority } from '@/utility';
@@ -49,50 +49,54 @@ const todoForm = useForm<{
 });
 </script>
 <template>
-    <div class="list-group">
-        <a href="#" class="list-group-item list-group-item-action list-group-item-secondary d-flex justify-content-between">
-            Fügen Sie etwas zur Liste hinzu:
-            <Modal
-                v-model="itemModalOpen"
-                :affirm="{
-                    class: 'btn btn-success ',
-                    text: 'Hinzufügen',
-                    action: addListItem,
-                    disabled: !todoForm.title || !todoForm.description || !todoForm.priority || !todoForm.deadline || !todoForm.selectedList,
-                }"
-                :negative="{ class: 'btn btn-danger', text: 'Abbrechen' }"
-            >
-                <!-- <form @submit="preve"></form> -->
-                <TextInput placeholder="Titel" v-model="todoForm.title" min="10" required />
-                <TextareaInput placeholder="Beschreibung" v-model="todoForm.description" />
-                <div class="mt-2">Priorität:</div>
-                <RadioGroup
-                    :options="[
-                        { text: 'Hoch', value: 'Hoch' },
-                        { text: 'Mittel', value: 'Mittel' },
-                        { text: 'Niedrig', value: 'Niedrig' },
-                    ]"
-                    v-model="todoForm.priority"
-                ></RadioGroup>
-                <div class="mt-2">Fertig bis:</div>
-                <DateInput v-model="todoForm.deadline"></DateInput>
-                <SelectInput
-                    showAll
-                    placeholder="Liste"
-                    :options="currentUser.role === 'admin' ? lists : currentLists"
-                    @selectItem="e => (todoForm.selectedList = e.id)"
-                    :optionProjection="e => e.name + ''"
-                ></SelectInput>
-                <div class="mt-2">Zugewiesene Benutzer:</div>
+    <Modal
+        v-model="itemModalOpen"
+        :affirm="{
+            class: 'btn btn-success ',
+            text: 'Hinzufügen',
+            action: addListItem,
+            disabled: !todoForm.title || !todoForm.description || !todoForm.priority || !todoForm.deadline || !todoForm.selectedList,
+        }"
+        :negative="{ class: 'btn btn-danger', text: 'Abbrechen' }"
+    >
+        <!-- <form @submit="preve"></form> -->
+        <TextInput placeholder="Titel" v-model="todoForm.title" min="10" required />
+        <TextareaInput placeholder="Beschreibung" v-model="todoForm.description" />
+        <div class="mt-2">Priorität:</div>
+        <RadioGroup
+            :options="[
+                { text: 'Hoch', value: 'Hoch' },
+                { text: 'Mittel', value: 'Mittel' },
+                { text: 'Niedrig', value: 'Niedrig' },
+            ]"
+            v-model="todoForm.priority"
+        ></RadioGroup>
+        <div class="mt-2">Fertig bis:</div>
+        <DateInput v-model="todoForm.deadline"></DateInput>
+        <SelectInput
+            showAll
+            placeholder="Liste"
+            :options="currentUser.role === 'admin' ? lists : currentLists"
+            @selectItem="e => (todoForm.selectedList = e.id)"
+            :optionProjection="e => e.name + ''"
+        ></SelectInput>
+        <div class="mt-2">Zugewiesene Benutzer:</div>
 
-                <MultiSelectInput
-                    v-model:selected="todoForm.assignedTo"
-                    placeholder="Zuweisung"
-                    :options="possibleUsers"
-                    :optionProjection="e => e.name"
-                ></MultiSelectInput>
-                <template #button><Button>Hinzufügen</Button></template>
-            </Modal>
-        </a>
-    </div>
+        <MultiSelectInput
+            v-model:selected="todoForm.assignedTo"
+            placeholder="Zuweisung"
+            :options="possibleUsers"
+            :optionProjection="e => e.name"
+        ></MultiSelectInput>
+        <template #button>
+            <div class="list-group">
+                <a href="#" class="list-group-item list-group-item-action list-group-item-secondary d-flex justify-content-between">
+                    <span>
+                        <i class="bi bi-plus-circle"></i>
+                        Aufgabe erstellen
+                    </span>
+                </a>
+            </div>
+        </template>
+    </Modal>
 </template>

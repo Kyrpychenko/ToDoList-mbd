@@ -15,7 +15,7 @@ export const displayedLists = computed(() =>
             todo_items: e.todo_items.filter(
                 t =>
                     (!filterOptions.value.inWork && !filterOptions.value.unstarted) ||
-                    t.state === (filterOptions.value.inWork ? 'InWork' : 'Unstarted')
+                    t.state === (filterOptions.value.inWork ? 'Unfinished' : 'Finished')
             ),
         }))
         .filter(l => l.todo_items.length !== 0)
@@ -33,7 +33,7 @@ export const displayedTodos = computed(() =>
             e.todo_items.filter(
                 t =>
                     (!filterOptions.value.inWork && !filterOptions.value.unstarted) ||
-                    t.state === (filterOptions.value.inWork ? 'InWork' : 'Unstarted')
+                    t.state === (filterOptions.value.inWork ? 'Unfinished' : 'Finished')
             )
         )
         .sort((a, b) =>

@@ -11,7 +11,7 @@ export type TodoItem = {
     title: string;
     description: string;
     user_id: number;
-    state: 'Unstarted' | 'InWork' | 'Finished';
+    state: 'Unfinished' | 'Finished';
     listId: number;
     priority: 1 | 2 | 3;
     todo_item_user: User[];
