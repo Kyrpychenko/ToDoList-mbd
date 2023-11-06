@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TodoItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ToDoController extends Controller
 {
@@ -41,17 +42,34 @@ class ToDoController extends Controller
             'assignedTo*.' => 'integer|exists:users,id',
         ]);
         $todoItem->todoItemUser()->sync($validated['assignedTo']);
-
         return back();
     }
+
     public function syncState(Request $request, TodoItem $todoItem)
     {
         $validated = $request->validate([
             'state' =>  'string',
         ]);
         $todoItem->update(['state' => $validated['state']]);
+        return back();
+    }
 
-
+    public function syncData(Request $request, TodoItem $todoItem)
+    {
+        // dd($request);
+        $validated = $request->validate([
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'deadline' => 'required|string',
+        ]);
+        $todoItem->update(['deadline' => $validated['deadline'], 'description' => $validated['description'], 'title' => $validated['title']]);
+        return back();
+    }
+    public function delete(Request $request, TodoItem $todoItem)
+    {
+        $currentUser = Auth::user();
+        if ($currentUser->role == 'admin' || $todoItem->user_id == $currentUser->id)
+            $todoItem->delete();
         return back();
     }
 }
