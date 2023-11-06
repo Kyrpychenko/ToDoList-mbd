@@ -9,7 +9,6 @@ const props = defineProps<{
     users: User[];
     todo: TodoItem;
     currentUser: User;
-    list: TodoList;
     // todoItems: TodoItem[];
 }>();
 const { todo, currentUser } = toRefs(props);

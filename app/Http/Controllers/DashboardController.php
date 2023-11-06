@@ -33,7 +33,10 @@ class DashboardController extends Controller
                 ];
             }
         );
+        if ($currentUser->role == 'admin') {
+            $currentLists = $lists;
+        }
         // dd($lists);
-        return Inertia::render('Dashboard', compact('currentUser', 'currentLists', 'users', 'lists'));
+        return Inertia::render('Dashboard', compact('currentUser', 'currentLists', 'users'));
     }
 }

@@ -32,8 +32,11 @@ class ListController extends Controller
                 ];
             }
         );
+        if ($currentUser->role == 'admin') {
+            $currentLists = $lists;
+        }
         // dd($lists);
-        return inertia::render('Lists', compact('currentUser', 'currentLists', 'users', 'lists'));
+        return inertia::render('Lists', compact('currentUser', 'currentLists', 'users'));
     }
 
     public function store(Request $request)

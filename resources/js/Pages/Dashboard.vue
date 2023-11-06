@@ -7,23 +7,22 @@ import CreateTodo from '@/Components/Dashboard/Create/CreateTodo.vue';
 import { Head } from '@inertiajs/vue3';
 import { TodoList, User } from '@/types';
 import { toRefs } from 'vue';
-import { computed } from 'vue';
+import { displayedLists, allLists } from '@/Components/Menu/menu';
 
 const props = defineProps<{
     users: User[];
     currentUser: User;
     currentLists: TodoList[];
-    lists: TodoList[];
 }>();
-const { users, currentUser, currentLists, lists } = toRefs(props);
-const displateLists = computed(() => (currentUser.value.role === 'admin' ? lists.value : currentLists.value));
+const { users, currentUser, currentLists } = toRefs(props);
+allLists.value = currentLists.value;
 </script>
 <template>
     <Head title="Dashboard" />
     <AuthenticatedLayout>
         <CreateList :users="users" :current-user="currentUser" />
-        <CreateTodo :users="users" :current-lists="currentLists" :currentUser="currentUser" :lists="lists" />
-        <template v-for="list of displateLists">
+        <CreateTodo :users="users" :current-lists="currentLists" :currentUser="currentUser" :lists="currentLists" />
+        <template v-for="list of displayedLists">
             <ShowList :list="list" :current-user="currentUser" :users="users" />
             <!-- {{ list.todo_items[0] }} -->
             <ShowTodo
