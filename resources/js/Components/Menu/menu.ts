@@ -17,17 +17,20 @@ export const displayedLists = computed(() =>
     allLists.value
         .map(e => ({
             ...e,
-            todo_items: e.todo_items.filter(t => !filterOptions === null || t.state === filterOptions.value),
+            todo_items: e.todo_items.filter(t => filterOptions.value === null || t.state === filterOptions.value),
         }))
         .filter(l => l.todo_items.length !== 0)
         .map(e => ({
             ...e,
-            todo_items: e.todo_items.sort(sortFunction),
+            todo_items: e.todo_items.sort((a, b) => sortFunction(a, b)),
         }))
 );
+console.log({ displayedLists: displayedLists.value });
 
 export const displayedTodos = computed(() =>
-    allLists.value.flatMap(e => e.todo_items.filter(t => !filterOptions === null || t.state === filterOptions.value)).sort(sortFunction)
+    allLists.value
+        .flatMap(e => e.todo_items.filter(t => filterOptions.value === null || t.state === filterOptions.value))
+        .sort((a, b) => sortFunction(a, b))
 );
 
 function sortFunction(a: TodoItem, b: TodoItem) {

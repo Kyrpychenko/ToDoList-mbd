@@ -20,6 +20,7 @@ allLists.value = currentLists.value;
 <template>
     <Head title="Dashboard" />
     <AuthenticatedLayout>
+        <!-- {{ currentLists.flatMap(e => e.todo_items) }} -->
         <CreateTodo :users="users" :current-lists="currentLists" :currentUser="currentUser" :lists="currentLists" />
         <CreateList :users="users" :current-user="currentUser" />
         <template v-for="list of displayedLists">
