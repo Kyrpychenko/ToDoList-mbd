@@ -1,8 +1,8 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import Chirp from '@/Components/Chirp.vue';
-import InputError from '@/Components/InputError.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
+import Chirp from '@/Components/Defaults/Chirp.vue';
+import InputError from '@/Components/Defaults/InputError.vue';
+import PrimaryButton from '@/Components/Defaults/PrimaryButton.vue';
 import { useForm, Head } from '@inertiajs/vue3';
 
 defineProps(['chirps']);

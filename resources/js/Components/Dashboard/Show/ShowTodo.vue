@@ -90,7 +90,7 @@ function syncTodo() {
             :negative="{
                 class: currentUser.id === todo.user_id ? 'btn btn-success ' : 'd-none',
                 text: 'Speichern',
-                disabled: !(todo.title.length >= 5 && todo.title.length <= 15),
+                disabled: !(syncTodoForm.title.length >= 5 && syncTodoForm.title.length <= 15),
                 action: () => syncTodo(),
             }"
         >

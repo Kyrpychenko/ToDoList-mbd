@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import InputError from '@/Components/Defaults/InputError.vue';
+import InputLabel from '@/Components/Defaults/InputLabel.vue';
+import PrimaryButton from '@/Components/Defaults/PrimaryButton.vue';
+import TextInput from '@/Components/Defaults/TextInput.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 
 const form = useForm({
@@ -43,9 +43,7 @@ const submit = () => {
             </div>
 
             <div class="flex justify-end mt-4">
-                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Confirm
-                </PrimaryButton>
+                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Confirm</PrimaryButton>
             </div>
         </form>
     </GuestLayout>

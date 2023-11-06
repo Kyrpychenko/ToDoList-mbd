@@ -50,7 +50,7 @@ class ToDoController extends Controller
             'state' =>  'string',
         ]);
         $todoItem->update(['state' => $validated['state']]);
-        // dd($todoItem);
+
 
         return back();
     }
