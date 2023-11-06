@@ -2,7 +2,7 @@
 import ShowTodo from '@/Components/Dashboard/Show/ShowTodo.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { TodoList, User } from '@/types';
-import { computed, toRefs } from 'vue';
+import { toRefs } from 'vue';
 import { displayedTodos, allLists } from '@/Components/Menu/menu';
 
 const props = defineProps<{
