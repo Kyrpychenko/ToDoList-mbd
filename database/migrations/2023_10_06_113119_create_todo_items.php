@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('todo_items', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->softDeletes();
             $table->string("title");
             $table->string("description");
             $table->foreignId("user_id")->constrained()->onDelete('restrict')->onUpdate('cascade');

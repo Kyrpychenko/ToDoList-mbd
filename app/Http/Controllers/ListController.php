@@ -14,7 +14,6 @@ class ListController extends Controller
     {
         $lists = TodoList::with("todoItems", "todoItems.todoItemUser")->get();
         $users = User::with('todoLists')->get();
-        // $listsUsers = TodoListUser::all();
         $currentUser = $request->user();
         $currentLists = $currentUser->todoLists()->get()->map(
             function (TodoList $list) {
@@ -56,15 +55,16 @@ class ListController extends Controller
         return back();
     }
 
-    public function syncUser(Request $request, TodoList $todoList)
+    public function sync(Request $request, TodoList $todoList)
     {
+        // dd("f");
         $validated = $request->validate([
             'assignedTo' => 'array',
             'assignedTo*.' => 'integer|exists:users,id',
+            'name' => 'required|string'
         ]);
-
-        // dd($validated);
         $todoList->todoListUser()->sync($validated['assignedTo']);
+        $todoList->update(['name' => $validated['name']]);
 
         return back();
     }

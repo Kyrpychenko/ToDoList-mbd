@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { Button, Modal, TextInput, MultiSelectInput, DateInput } from 'custom-mbd-components';
 import { TodoItem, TodoList, User } from '@/types';
-import { useForm } from '@inertiajs/vue3';
+import { router, useForm } from '@inertiajs/vue3';
 import { toRefs } from 'vue';
 import { Priority } from '@/utility';
+import { Router } from 'ziggy-js';
 
 const props = defineProps<{
     users: User[];
@@ -30,6 +31,15 @@ const syncTodoForm = useForm<{
     assignedTo: todo.value.todo_item_user,
     deadline: todo.value.deadline,
 });
+const syncDataTodoForm = useForm<{
+    title: string;
+    description: string;
+    deadline: string;
+}>({
+    title: todo.value.title,
+    description: todo.value.description,
+    deadline: todo.value.deadline,
+});
 
 function addUserToItem() {
     assignedUserForm.assignedTo.push(currentUser.value);
@@ -48,25 +58,27 @@ function delUserFromItem() {
     assignedUserForm.post(route('syncUserTodo', todo.value.id), { preserveScroll: true });
 }
 
-const syncStateTdoForm = useForm<{ state: 'Unstarted' | 'InWork' | 'Finished' }>({
+const syncStateTodoForm = useForm<{ state: 'Unstarted' | 'InWork' | 'Finished' }>({
     state: todo.value.state,
 });
 
 function syncStateTodo() {
-    syncStateTdoForm.state =
-        syncStateTdoForm.state == 'Unstarted'
+    syncStateTodoForm.state =
+        syncStateTodoForm.state == 'Unstarted'
             ? 'InWork'
-            : syncStateTdoForm.state == 'InWork'
+            : syncStateTodoForm.state == 'InWork'
             ? 'Finished'
-            : syncStateTdoForm.state == 'Finished'
+            : syncStateTodoForm.state == 'Finished'
             ? 'InWork'
             : 'Unstarted';
 
-    syncStateTdoForm.post(route('syncStateTodo', todo.value.id), { preserveScroll: true });
+    syncStateTodoForm.post(route('syncStateTodo', todo.value.id), { preserveScroll: true });
 }
 
-function syncTodo() {
-    syncTodoForm.post(route('syncTodo', todo.value.id), { preserveScroll: true });
+function syncDataTodo() {
+    if (currentUser.value.role === 'admin' || todo.value.user_id === currentUser.value.id) {
+        syncDataTodoForm.post(route('syncDataTodo', todo.value.id), { preserveScroll: true });
+    }
 }
 </script>
 
@@ -75,22 +87,16 @@ function syncTodo() {
         <!-- {{ assignedUserForm.assignedTo }} -->
         <Modal
             :title="todo.title"
-            :affirm-alt="{
-                text:
-                    todo.state == 'Unstarted' ? 'Start' : todo.state == 'InWork' ? 'Fertig' : todo.state == 'Finished' ? 'Weiter Arbeiten' : 'Fertig',
-                action: () => syncStateTodo(),
-                class: 'btn btn-dark ',
-            }"
             :affirm="{
-                class: !todo.todo_item_user.find(e => e.id == currentUser.id) ? 'btn btn-success ' : 'btn btn-danger',
-                text: !todo.todo_item_user.find(e => e.id == currentUser.id) ? 'Zuordnen' : 'Verlassen',
-                action: !todo.todo_item_user.find(e => e.id == currentUser.id) ? () => addUserToItem() : () => delUserFromItem(),
-            }"
-            :negative="{
                 class: currentUser.id === todo.user_id ? 'btn btn-success ' : 'd-none',
                 text: 'Speichern',
-                disabled: !(todo.title.length >= 5 && todo.title.length <= 15),
-                action: () => syncTodo(),
+                disabled: !(syncDataTodoForm.title.length >= 5 && syncDataTodoForm.title.length <= 15),
+                action: () => syncDataTodo(),
+            }"
+            :negative="{
+                class: 'btn btn-danger',
+                text: 'Löschen',
+                action: () => router.post(route('deleteTodo', todo.id)),
             }"
         >
             <div id="todo">
@@ -101,12 +107,12 @@ function syncTodo() {
                     </div>
                     <div>
                         <div v-if="currentUser.id === todo.user_id">
-                            <TextInput placeholder="Titel" v-model="syncTodoForm.title" />
+                            <TextInput placeholder="Titel" v-model="syncDataTodoForm.title" />
                         </div>
                     </div>
                     <div>
                         <div v-if="currentUser.id === todo.user_id">
-                            <TextInput placeholder="Beschreibung" v-model="syncTodoForm.description" />
+                            <TextInput placeholder="Beschreibung" v-model="syncDataTodoForm.description" />
                         </div>
                         <div v-else>
                             <div class="mt-3">Ziel des Todos:</div>
@@ -117,7 +123,7 @@ function syncTodo() {
                     </div>
                     <div>
                         <div v-if="currentUser.id === todo.user_id">
-                            <DateInput placeholder="Abgabedatum" v-model="syncTodoForm.deadline" />
+                            <DateInput placeholder="Abgabedatum" v-model="syncDataTodoForm.deadline" />
                         </div>
                         <div v-else>
                             <div class="mt-3">Abgabedatum:</div>
@@ -137,15 +143,44 @@ function syncTodo() {
                         'bg-danger': todo.priority == 3,
                     }"
                 >
-                    <div class="card-header fw-bold">
+                    <div class="card-header fw-bold d-flex justify-content-between align-items-center">
                         {{ todo.state == 'Finished' ? '✔️' : todo.state == 'InWork' ? '⚙️' : '❌' }}
                         {{ todo.title }}
                     </div>
                     <div class="card-body">
-                        <p class="card-text">{{ todo.description }}{{ todo.description }}</p>
+                        <span>
+                            <p class="card-text">{{ todo.description }}</p>
+                        </span>
                     </div>
-                    <div class="card-footer" v-if="todo.todo_item_user.length > 0">
-                        Zugewiesene Benutzer: {{ todo.todo_item_user.map(a => a.name).join(', ') }}
+                    <div class="card-footer d-flex justify-content-between align-items-center">
+                        <span>
+                            <b>Zugewiesene Benutzer:</b>
+                            {{ todo.todo_item_user.map(a => a.name).join(', ') }}
+                        </span>
+                        <span>
+                            <Button
+                                v-if="todo.todo_item_user.find(e => e.id == currentUser.id)"
+                                :class="!todo.todo_item_user.find(e => e.id == currentUser.id) ? 'btn btn-dark ' : 'btn btn-danger'"
+                                @click.stop="syncStateTodo()"
+                            >
+                                {{
+                                    todo.state == 'Unstarted'
+                                        ? 'Start'
+                                        : todo.state == 'InWork'
+                                        ? 'Fertig'
+                                        : todo.state == 'Finished'
+                                        ? 'Weiter Arbeiten'
+                                        : 'Fertig'
+                                }}
+                            </Button>
+                            <Button
+                                :class="!todo.todo_item_user.find(e => e.id == currentUser.id) ? 'btn btn-info ' : 'btn btn-danger'"
+                                @click.stop="!todo.todo_item_user.find(e => e.id == currentUser.id) ? addUserToItem() : delUserFromItem()"
+                                class="ms-2"
+                            >
+                                {{ !todo.todo_item_user.find(e => e.id == currentUser.id) ? 'Zuordnen' : 'Verlassen' }}
+                            </Button>
+                        </span>
                     </div>
                 </div>
             </template>

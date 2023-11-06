@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Modal, MultiSelectInput } from 'custom-mbd-components';
+import { Modal, MultiSelectInput, TextInput } from 'custom-mbd-components';
 import { useForm } from '@inertiajs/vue3';
 import { TodoList, User } from '@/types';
 import { toRefs } from 'vue';
@@ -9,30 +9,34 @@ const props = defineProps<{
     list: TodoList;
     users: User[];
 }>();
-const { users, list } = toRefs(props);
+const { users, list, currentUser } = toRefs(props);
 
-const assignUserForm = useForm<{ assignedTo: User[] }>({
+const listForm = useForm<{ assignedTo: User[]; name: string }>({
     assignedTo: users.value.filter(u => u.todo_lists.filter(l => l.id == list.value.id).length),
+    name: list.value.name,
 });
 
-function syncUserList(list: TodoList) {
-    assignUserForm.transform(data => ({
-        ...data,
-        assignedTo: assignUserForm.assignedTo.map(a => a.id),
-    }));
-    assignUserForm.post(route('syncUserList', list.id), { preserveScroll: true });
-    // assignUserForm.reset();
+function syncList() {
+    if (currentUser.value.role === 'admin') {
+        console.log('f');
+        listForm.transform(data => ({
+            ...data,
+            assignedTo: listForm.assignedTo.map(a => a.id),
+        }));
+        listForm.post(route('syncList', list.value.id), { preserveScroll: true });
+    }
 }
 </script>
 
 <template>
     <Modal
-        :title="list.name"
-        :affirm="{ class: 'btn btn-success ', text: currentUser.role == 'admin' ? 'Speichern' : 'schließen', action: () => syncUserList(list) }"
-        :negative="{ class: 'btn btn-danger', text: 'Abbrechen', action: () => assignUserForm.reset() }"
+        :title="'Liste: ' + list.name"
+        :affirm="{ class: 'btn btn-success ', text: currentUser.role == 'admin' ? 'Speichern' : 'schließen', action: () => syncList() }"
+        :negative="{ class: 'btn btn-danger', text: 'Abbrechen', action: () => listForm.reset() }"
     >
         <div id="list">
             <div class="card-body">
+                <TextInput placeholder="Name" v-if="currentUser.role == 'admin'" v-model="listForm.name" />
                 Zugewiesene Benutzer:
                 <div v-for="user in users.filter(u => u.todo_lists.filter(l => l.id == list.id).length && u.role !== 'admin')">
                     <div class="my-3 card text-black text-center" style="background-color: #f1ede4">
@@ -43,7 +47,7 @@ function syncUserList(list: TodoList) {
                 </div>
                 <MultiSelectInput
                     v-if="currentUser.role == 'admin'"
-                    v-model:selected="assignUserForm.assignedTo"
+                    v-model:selected="listForm.assignedTo"
                     :keyExtractor="e => e.id + ''"
                     :show-selected="false"
                     placeholder="+"

@@ -33,8 +33,9 @@ Route::controller(ListController::class)->middleware("auth")->group(function () 
 });
 
 Route::controller(ListController::class)->middleware("auth")->group(function () {
-    Route::post('/syncUserList/{todoList}', 'syncUser')->name('syncUserList');
+    Route::post('/syncList/{todoList}', 'sync')->name('syncList');
 });
+
 
 Route::controller(ToDoController::class)->middleware("auth")->group(function () {
 
@@ -46,5 +47,13 @@ Route::controller(ToDoController::class)->middleware("auth")->group(function () 
 });
 
 Route::controller(ToDoController::class)->middleware("auth")->group(function () {
+    Route::post('/syncDataTodo/{todoItem}', 'syncData')->name('syncDataTodo');
+});
+
+Route::controller(ToDoController::class)->middleware("auth")->group(function () {
     Route::post('/storeTodo', 'store')->name('storeTodo');
+});
+
+Route::controller(ToDoController::class)->middleware("auth")->group(function () {
+    Route::post('/deleteTodo/{todoItem}', 'delete')->name('deleteTodo');
 });

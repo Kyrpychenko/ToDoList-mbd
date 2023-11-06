@@ -9,6 +9,11 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 
+//FIXME: for some obscure reason we have to import (and use so it doesnt get pruned) vue-resizeable here, or otherwise the calendar cant use it
+//@ts-expect-error
+import VueResizable from 'vue-resizable';
+VueResizable;
+
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
