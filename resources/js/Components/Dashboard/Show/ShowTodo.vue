@@ -43,12 +43,12 @@ function delUserFromItem() {
     assignedUserForm.post(route('syncUserTodo', todo.value.id), { preserveScroll: true });
 }
 
-const syncStateTodoForm = useForm<{ state: 'Unfinished' | 'Finished' }>({
+const syncStateTodoForm = useForm<{ state: 'unfinished' | 'finished' }>({
     state: todo.value.state,
 });
 
 function syncStateTodo() {
-    syncStateTodoForm.state = syncStateTodoForm.state == 'Unfinished' ? 'Finished' : 'Unfinished';
+    syncStateTodoForm.state = syncStateTodoForm.state == 'unfinished' ? 'finished' : 'unfinished';
 
     syncStateTodoForm.post(route('syncStateTodo', todo.value.id), { preserveScroll: true });
 }
@@ -126,8 +126,8 @@ function syncDataTodo() {
                 >
                     <div class="card-header fw-bold d-flex justify-content-between align-items-center">
                         <span>
-                            <i class="bi bi-check-circle-fill text-success" v-if="todo.state == 'Finished'"></i>
-                            <i class="bi bi-x-circle-fill text-danger" v-if="todo.state == 'Unfinished'"></i>
+                            <i class="bi bi-check-circle-fill text-success" v-if="todo.state == 'finished'"></i>
+                            <i class="bi bi-x-circle-fill text-danger" v-if="todo.state == 'unfinished'"></i>
                             {{ todo.title }}
                         </span>
                     </div>
@@ -147,7 +147,7 @@ function syncDataTodo() {
                                 class="btn btn-primary"
                                 @click.stop="syncStateTodo()"
                             >
-                                {{ todo.state == 'Unfinished' ? 'Fertig' : 'Nicht Fertig' }}
+                                {{ todo.state == 'unfinished' ? 'Fertig' : 'Nicht Fertig' }}
                             </Button>
                             <Button
                                 :class="!todo.todo_item_user.find(e => e.id == currentUser.id) ? 'btn btn-success ' : 'btn btn-danger'"
