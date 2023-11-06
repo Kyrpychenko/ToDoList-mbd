@@ -1,13 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import ApplicationLogo from '@/Components/Defaults/ApplicationLogo.vue';
 import Menu from '@/Components/Menu/Menu.vue';
 import DropdownLink from '@/Components/Defaults/DropdownLink.vue';
 import NavLink from '@/Components/Defaults/NavLink.vue';
-import { Link, usePage } from '@inertiajs/vue3';
-
-const showingNavigationDropdown = ref(false);
-const user = usePage().props.auth.user;
+import { Link } from '@inertiajs/vue3';
 </script>
 
 <template>
