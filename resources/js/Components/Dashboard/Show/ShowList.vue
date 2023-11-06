@@ -57,7 +57,7 @@ function syncList() {
             </div>
         </div>
         <template #button>
-            <div class="my-3 card text-black text-center" style="background-color: #fd7e14">
+            <div class="mt-4 card text-black text-center" style="background-color: #fd7e14">
                 <div class="card-header">
                     <p class="card-text">-{{ list.name }}-</p>
                 </div>

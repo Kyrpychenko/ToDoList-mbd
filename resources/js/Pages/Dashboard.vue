@@ -20,20 +20,21 @@ allLists.value = currentLists.value;
 <template>
     <Head title="Dashboard" />
     <AuthenticatedLayout>
-        <CreateList :users="users" :current-user="currentUser" />
         <CreateTodo :users="users" :current-lists="currentLists" :currentUser="currentUser" :lists="currentLists" />
+        <CreateList :users="users" :current-user="currentUser" />
         <template v-for="list of displayedLists">
-            <ShowList :list="list" :current-user="currentUser" :users="users" />
-            <!-- {{ list.todo_items[0] }} -->
-            <ShowTodo
-                v-for="todo of list.todo_items"
-                :todo="todo"
-                :users="users"
-                :current-user="currentUser"
-                :list="list"
-                class="my-3"
-                style="max-height: max-content"
-            />
+            <div style="background-color: #ddd; border-radius: 15px 15px 15px 15px">
+                <ShowList :list="list" :current-user="currentUser" :users="users" />
+                <ShowTodo
+                    v-for="todo of list.todo_items"
+                    :todo="todo"
+                    :users="users"
+                    :current-user="currentUser"
+                    :list="list"
+                    class="my-2"
+                    style="max-height: max-content"
+                />
+            </div>
         </template>
     </AuthenticatedLayout>
 </template>
