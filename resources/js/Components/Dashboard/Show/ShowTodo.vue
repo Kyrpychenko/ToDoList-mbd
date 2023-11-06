@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { Button, Modal, TextInput, MultiSelectInput, DateInput } from 'custom-mbd-components';
-import { TodoItem, TodoList, User } from '@/types';
+import { Button, Modal, TextInput,  DateInput } from 'custom-mbd-components';
+import { TodoItem,  User } from '@/types';
 import { router, useForm } from '@inertiajs/vue3';
 import { toRefs } from 'vue';
 import { Priority } from '@/utility';
-import { Router } from 'ziggy-js';
 
 const props = defineProps<{
     users: User[];
