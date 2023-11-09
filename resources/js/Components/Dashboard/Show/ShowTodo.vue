@@ -77,7 +77,7 @@ function syncDataTodo() {
                 action: () => router.post(route('deleteTodo', todo.id)),
             }"
         >
-            <div id="todo">
+            <div>
                 <div class="w-50">
                     <div>Todo erstellt von:</div>
                     <div class="ms-3">
@@ -126,8 +126,9 @@ function syncDataTodo() {
                 >
                     <div class="card-header fw-bold d-flex justify-content-between align-items-center">
                         <span>
-                            <i class="bi bi-check-circle-fill text-success" v-if="todo.state == 'finished'"></i>
-                            <i class="bi bi-x-circle-fill text-danger" v-if="todo.state == 'unfinished'"></i>
+                            <i class="bi bi-check-circle-fill text-success" v-if="syncStateTodoForm.state == 'finished'"></i>
+                            <i class="bi bi-x-circle-fill text-danger" v-if="syncStateTodoForm.state == 'unfinished'"></i>
+
                             {{ todo.title }}
                         </span>
                     </div>
