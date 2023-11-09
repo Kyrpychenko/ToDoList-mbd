@@ -7,7 +7,7 @@ import CreateTodo from '@/Components/Dashboard/Create/CreateTodo.vue';
 import { Head } from '@inertiajs/vue3';
 import { TodoList, User } from '@/types';
 import { toRefs } from 'vue';
-import { displayedLists, allLists } from '@/Components/Menu/menu';
+import { displayedLists, allLists, currentUser as menuUser } from '@/Components/Menu/menu';
 import { watchEffect } from 'vue';
 
 const props = defineProps<{
@@ -17,6 +17,7 @@ const props = defineProps<{
 }>();
 const { users, currentUser, currentLists } = toRefs(props);
 watchEffect(() => (allLists.value = currentLists.value));
+menuUser.value = currentUser.value;
 </script>
 <template>
     <Head title="Dashboard" />
