@@ -36,6 +36,14 @@ import { Link } from '@inertiajs/vue3';
                         </a>
                     </li>
                     <div class="flex-grow-1"></div>
+                    <div class="nav-item dropdown d-flex justify-content-center align-items-center text-light">
+                        {{ $page.props.auth.user.todo_lists }}
+                        <!-- {{
+                            $page.props.auth.user.todo_lists.filter(i =>
+                                i.todo_items.filter(t => t.todo_item_user.filter(u => u.id === $page.props.auth.user.id))
+                            ).length
+                        }} -->
+                    </div>
                     <li class="nav-item dropdown d-flex justify-content-center align-items-center">
                         <a
                             class="nav-link dropdown-toggle text-light"
@@ -45,14 +53,28 @@ import { Link } from '@inertiajs/vue3';
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
                         >
-                            {{ $page.props.auth.user.name }}
+                            <!-- {{ $page.props.auth.user.name }} -->
+                            <i class="bi bi-person-circle" style="font-size: 1.5rem"></i>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <li>
-                                <DropdownLink :href="route('profile.edit')" class="dropdown-item">Profil</DropdownLink>
+                                <DropdownLink :href="route('profile.edit')" class="dropdown-item">
+                                    <b>
+                                        {{
+                                            $page.props.auth.user.name.slice(0, 1).toLocaleUpperCase() +
+                                            $page.props.auth.user.name.slice(1).toLocaleLowerCase()
+                                        }}
+                                    </b>
+                                    <br />
+                                    {{ $page.props.auth.user.email }}
+                                </DropdownLink>
                             </li>
                             <li>
-                                <DropdownLink :href="route('logout')" method="post" class="dropdown-item">Abmelden</DropdownLink>
+                                <DropdownLink :href="route('logout')" method="post" class="dropdown-item">
+                                    <i class="bi bi-box-arrow-in-right" />
+                                    Abmelden
+                                    <!-- {{ $page.props.auth.user.todo_lists }} -->
+                                </DropdownLink>
                             </li>
                         </ul>
                     </li>
