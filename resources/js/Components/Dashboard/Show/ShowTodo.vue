@@ -78,7 +78,7 @@ function syncDataTodo() {
             :affirm="{
                 class: currentUser.id === todo.user_id ? 'btn btn-success ' : 'd-none',
                 text: 'Speichern',
-                disabled: !(syncDataTodoForm.title.length >= 5 && syncDataTodoForm.title.length <= 15),
+                disabled: !(syncDataTodoForm.title.length >= 5 && syncDataTodoForm.title.length <= 25),
                 action: () => syncDataTodo(),
             }"
             :negative="{
