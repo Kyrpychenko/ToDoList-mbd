@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { filterOptions, sortOptions, toggleFilter, toggleSort } from '@/Components/Menu/menu';
+import { filterOptions, sortOptions, toggleFilter, toggleSort, searchValue } from '@/Components/Menu/menu';
+import Search from 'custom-mbd-components/src/components/SexyInputs/Search.vue';
 </script>
 <template>
     <div class="d-flex sticky-top" style="height: 0">
         <div>
+            <Search v-model="searchValue" :placeholder="'Suche'" class="w-50"></Search>
             <div>Filtern nach:</div>
             <button class="badge rounded-pill bg-secondary text-white me-1" @click="toggleFilter('inWork')">
                 in Arbeit
@@ -18,6 +20,11 @@ import { filterOptions, sortOptions, toggleFilter, toggleSort } from '@/Componen
             <button class="badge rounded-pill bg-secondary text-white me-1" @click="toggleFilter('finished')">
                 Abgeschlossen
                 <i v-if="filterOptions !== 'finished'" class="bi bi-plus-circle"></i>
+                <i v-else class="bi bi-dash-circle"></i>
+            </button>
+            <button class="badge rounded-pill bg-secondary text-white me-1" @click="toggleFilter('createdBy')">
+                Von dir erstellt
+                <i v-if="filterOptions !== 'createdBy'" class="bi bi-plus-circle"></i>
                 <i v-else class="bi bi-dash-circle"></i>
             </button>
             <div>Sortieren nach:</div>

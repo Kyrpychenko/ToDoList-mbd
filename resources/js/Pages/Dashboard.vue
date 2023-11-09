@@ -7,7 +7,7 @@ import CreateTodo from '@/Components/Dashboard/Create/CreateTodo.vue';
 import { Head } from '@inertiajs/vue3';
 import { TodoList, User } from '@/types';
 import { toRefs } from 'vue';
-import { displayedLists, allLists } from '@/Components/Menu/menu';
+import { displayedLists, allLists, currentUser as menuUser } from '@/Components/Menu/menu';
 
 const props = defineProps<{
     users: User[];
@@ -16,6 +16,7 @@ const props = defineProps<{
 }>();
 const { users, currentUser, currentLists } = toRefs(props);
 allLists.value = currentLists.value;
+menuUser.value = currentUser.value;
 </script>
 <template>
     <Head title="Dashboard" />
