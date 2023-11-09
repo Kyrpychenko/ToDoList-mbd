@@ -71,8 +71,8 @@ const todoForm = useForm<{
             ]"
             v-model="todoForm.priority"
         ></RadioGroup>
-        <div class="mt-2">Fertig bis:</div>
-        <DateInput v-model="todoForm.deadline"></DateInput>
+        <!-- <div class="mt-2">Fertig bis:</div> -->
+        <DateInput v-model="todoForm.deadline" placeholder="Fälligkeitsdatum" />
         <SelectInput
             showAll
             placeholder="Liste"

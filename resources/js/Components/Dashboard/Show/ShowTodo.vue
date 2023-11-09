@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, Modal, TextInput, DateInput } from 'custom-mbd-components';
+import { Button, Modal, TextInput, DateInput, TextareaInput } from 'custom-mbd-components';
 import { TodoItem, User } from '@/types';
 import { router, useForm } from '@inertiajs/vue3';
 import { toRefs } from 'vue';
@@ -93,7 +93,7 @@ function syncDataTodo() {
                     </div>
                     <div>
                         <div v-if="currentUser.id === todo.user_id">
-                            <TextInput placeholder="Beschreibung" v-model="syncDataTodoForm.description" />
+                            <TextareaInput placeholder="Beschreibung" v-model="syncDataTodoForm.description" />
                         </div>
                         <div v-else>
                             <div class="mt-3">Ziel des Todos:</div>
