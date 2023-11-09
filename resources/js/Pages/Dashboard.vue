@@ -8,6 +8,7 @@ import { Head } from '@inertiajs/vue3';
 import { TodoList, User } from '@/types';
 import { toRefs } from 'vue';
 import { displayedLists, allLists } from '@/Components/Menu/menu';
+import { watchEffect } from 'vue';
 
 const props = defineProps<{
     users: User[];
@@ -15,7 +16,7 @@ const props = defineProps<{
     currentLists: TodoList[];
 }>();
 const { users, currentUser, currentLists } = toRefs(props);
-allLists.value = currentLists.value;
+watchEffect(() => (allLists.value = currentLists.value));
 </script>
 <template>
     <Head title="Dashboard" />

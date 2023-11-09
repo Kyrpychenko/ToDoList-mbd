@@ -8,7 +8,6 @@ const props = defineProps<{
     users: User[];
     todo: TodoItem;
     currentUser: User;
-    // todoItems: TodoItem[];
 }>();
 const { todo, currentUser } = toRefs(props);
 
@@ -50,13 +49,24 @@ const syncStateTodoForm = useForm<{ state: 'unfinished' | 'finished' }>({
 function syncStateTodo() {
     syncStateTodoForm.state = syncStateTodoForm.state == 'unfinished' ? 'finished' : 'unfinished';
 
-    syncStateTodoForm.post(route('syncStateTodo', todo.value.id), { preserveScroll: true });
+    syncStateTodoForm.post(route('syncStateTodo', todo.value.id), {
+        preserveScroll: true,
+        onSuccess() {
+            router.reload({ only: ['currentLists'] });
+        },
+    });
 }
 
 function syncDataTodo() {
     if (currentUser.value.role === 'admin' || todo.value.user_id === currentUser.value.id) {
-        syncDataTodoForm.post(route('syncDataTodo', todo.value.id), { preserveScroll: true });
+        syncDataTodoForm.post(route('syncDataTodo', todo.value.id), {
+            preserveScroll: true,
+            onSuccess() {
+                router.reload({ only: ['currentLists'] });
+            },
+        });
     }
+    // router.reload({ only: ['todo_items'] });
 }
 </script>
 
