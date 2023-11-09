@@ -2,9 +2,10 @@ import { TodoItem, TodoList, User } from '@/types';
 import { computed, ref } from 'vue';
 export const currentUser = ref<User | null>(null);
 export const allLists = ref<TodoList[]>([]);
-export const filterOptions = ref<'inWork' | 'unstarted' | 'finished' | 'createdBy' | null>('inWork');
+export const filterOptions = ref<'unfinished' | 'finished' | 'createdBy' | null>(null);
 export const sortOptions = ref<'priority' | 'deadline' | null>(null);
 export const searchValue = ref('');
+
 export function toggleFilter(option: typeof filterOptions.value) {
     if (filterOptions.value === option) filterOptions.value = null;
     else filterOptions.value = option;
@@ -18,7 +19,7 @@ export const displayedLists = computed(() => {
         .map(e => ({
             ...e,
             todo_items: e.todo_items.filter(t =>
-                filterOptions.value === null || filterOptions.value === 'finished' || filterOptions.value === 'unstarted'
+                filterOptions.value === 'finished' || filterOptions.value === 'unfinished'
                     ? t.state === filterOptions.value
                     : filterOptions.value === 'createdBy'
                     ? t.user_id === currentUser.value?.id

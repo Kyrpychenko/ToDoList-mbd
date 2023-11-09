@@ -7,14 +7,14 @@ import Search from 'custom-mbd-components/src/components/SexyInputs/Search.vue';
         <div>
             <Search v-model="searchValue" :placeholder="'Suche'" class="w-50"></Search>
             <div>Filtern nach:</div>
-            <button class="badge rounded-pill bg-secondary text-white me-1" @click="toggleFilter('inWork')">
+            <!-- <button class="badge rounded-pill bg-secondary text-white me-1" @click="toggleFilter('inWork')">
                 in Arbeit
                 <i v-if="filterOptions !== 'inWork'" class="bi bi-plus-circle"></i>
                 <i v-else class="bi bi-dash-circle"></i>
-            </button>
-            <button class="badge rounded-pill bg-secondary text-white me-1" @click="toggleFilter('unstarted')">
+            </button> -->
+            <button class="badge rounded-pill bg-secondary text-white me-1" @click="toggleFilter('unfinished')">
                 Nicht Angefangen
-                <i v-if="filterOptions !== 'unstarted'" class="bi bi-plus-circle"></i>
+                <i v-if="filterOptions !== 'unfinished'" class="bi bi-plus-circle"></i>
                 <i v-else class="bi bi-dash-circle"></i>
             </button>
             <button class="badge rounded-pill bg-secondary text-white me-1" @click="toggleFilter('finished')">

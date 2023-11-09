@@ -25,19 +25,39 @@ menuUser.value = currentUser.value;
         <!-- {{ currentLists.flatMap(e => e.todo_items) }} -->
         <CreateTodo :users="users" :current-lists="currentLists" :currentUser="currentUser" :lists="currentLists" />
         <CreateList :users="users" :current-user="currentUser" />
+
         <template v-for="list of displayedLists">
             <div style="background-color: #ddd; border-radius: 15px 15px 15px 15px">
                 <ShowList :list="list" :current-user="currentUser" :users="users" />
-                <ShowTodo
-                    v-for="todo of list.todo_items"
-                    :todo="todo"
-                    :users="users"
-                    :current-user="currentUser"
-                    :list="list"
-                    class="my-2"
-                    style="max-height: max-content"
-                />
+                <TransitionGroup name="todo">
+                    <ShowTodo
+                        v-for="todo of list.todo_items"
+                        :key="todo.id"
+                        :todo="todo"
+                        :users="users"
+                        :current-user="currentUser"
+                        :list="list"
+                        class="my-2"
+                        style="max-height: max-content"
+                    />
+                </TransitionGroup>
             </div>
         </template>
     </AuthenticatedLayout>
 </template>
+<style scoped>
+.todo-move,
+.todo-enter-active,
+.todo-leave-active {
+    transition: all 0.1s ease;
+}
+
+.todo-enter-from,
+.todo-leave-to {
+    opacity: 0;
+}
+
+.todo-leave-active .todo-enter-active {
+    position: relative;
+}
+</style>
