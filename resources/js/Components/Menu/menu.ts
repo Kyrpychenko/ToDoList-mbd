@@ -2,7 +2,7 @@ import { TodoItem, TodoList, User } from '@/types';
 import { computed, ref } from 'vue';
 export const currentUser = ref<User | null>(null);
 export const allLists = ref<TodoList[]>([]);
-export const filterOptions = ref<'inWork' | 'unstarted' | 'finished' | 'createdBy' | null>(null);
+export const filterOptions = ref<'inWork' | 'unstarted' | 'finished' | 'createdBy' | null>('inWork');
 export const sortOptions = ref<'priority' | 'deadline' | null>(null);
 export const searchValue = ref('');
 export function toggleFilter(option: typeof filterOptions.value) {
