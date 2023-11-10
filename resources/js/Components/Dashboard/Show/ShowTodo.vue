@@ -96,8 +96,8 @@ function syncDataTodo() {
                     <div>
                         <div v-if="currentUser.id === todo.user_id">
                             <TextInput placeholder="Titel" v-model="syncDataTodoForm.title" />
-                            <div v-if="!(syncDataTodoForm.title.length >= 5 && syncDataTodoForm.title.length <= 35)">
-                                Der Name muss zwischen 5 und 35 zeichen haben.
+                            <div v-if="!(syncDataTodoForm.title.length >= 5 && syncDataTodoForm.title.length <= 50)">
+                                Der Name muss zwischen 5 und 50 zeichen haben.
                             </div>
                         </div>
                     </div>
