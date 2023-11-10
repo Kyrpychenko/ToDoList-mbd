@@ -144,7 +144,7 @@ function syncDataTodo() {
                     </div>
                     <div class="card-body">
                         <span>
-                            <p class="card-text">{{ todo.description }}</p>
+                            <p class="card-text">{{ todo.description.slice(0, 100) + (todo.description.length > 100 ? '...' : '') }}</p>
                         </span>
                     </div>
                     <div class="card-footer d-flex justify-content-between align-items-center">
