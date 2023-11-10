@@ -56,7 +56,7 @@ const todoForm = useForm<{
             text: 'Hinzufügen',
             action: addListItem,
             disabled:
-                todoForm.title.length > 35 ||
+                todoForm.title.length > 50 ||
                 todoForm.title.length < 5 ||
                 !todoForm.description ||
                 !todoForm.priority ||
@@ -66,8 +66,8 @@ const todoForm = useForm<{
         :negative="{ class: 'btn btn-danger', text: 'Abbrechen' }"
     >
         <!-- <form @submit="preve"></form> -->
-        <TextInput placeholder="Titel" v-model="todoForm.title" min="5" max="35" required />
-        <div v-if="!(todoForm.title.length >= 5 && todoForm.title.length <= 35)">Der Name muss zwischen 5 und 35 zeichen haben.</div>
+        <TextInput placeholder="Titel" v-model="todoForm.title" required />
+        <div v-if="!(todoForm.title.length >= 5 && todoForm.title.length <= 50)">Der Name muss zwischen 5 und 50 zeichen haben.</div>
         <TextareaInput placeholder="Beschreibung" v-model="todoForm.description" />
         <div class="mt-2">Priorität:</div>
         <RadioGroup
