@@ -9,7 +9,7 @@ import { TodoList, User } from '@/types';
 import { toRefs } from 'vue';
 import { displayedLists, allLists, currentUser as menuUser } from '@/Components/Menu/menu';
 import { watchEffect } from 'vue';
-
+import Menu from '@/Components/Menu/Menu.vue';
 const props = defineProps<{
     users: User[];
     currentUser: User;
@@ -25,7 +25,7 @@ menuUser.value = currentUser.value;
         <!-- {{ currentLists.flatMap(e => e.todo_items) }} -->
         <CreateTodo :users="users" :current-lists="currentLists" :currentUser="currentUser" :lists="currentLists" />
         <CreateList :users="users" :current-user="currentUser" />
-
+        <Menu />
         <template v-for="list of displayedLists">
             <div style="background-color: #ddd; border-radius: 15px 15px 15px 15px">
                 <ShowList :list="list" :current-user="currentUser" :users="users" />

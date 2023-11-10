@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ApplicationLogo from '@/Components/Defaults/ApplicationLogo.vue';
-import Menu from '@/Components/Menu/Menu.vue';
+
 import DropdownLink from '@/Components/Defaults/DropdownLink.vue';
 import NavLink from '@/Components/Defaults/NavLink.vue';
 import { Link } from '@inertiajs/vue3';
@@ -82,7 +82,6 @@ import { Link } from '@inertiajs/vue3';
             </div>
         </div>
     </nav>
-    <Menu />
     <main class="container pt-4">
         <slot />
     </main>
