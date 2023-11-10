@@ -88,7 +88,7 @@ function syncDataTodo() {
             }"
         >
             <div>
-                <div class="w-50">
+                <div>
                     <div>Todo erstellt von:</div>
                     <div class="ms-3">
                         {{ users.find(u => u.id === todo.user_id)?.name }}
