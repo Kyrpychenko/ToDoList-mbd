@@ -2,7 +2,7 @@
 import ShowTodo from '@/Components/Dashboard/Show/ShowTodo.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { TodoList, User } from '@/types';
-import { toRefs } from 'vue';
+import { toRefs, watchEffect } from 'vue';
 import { displayedTodos, allLists } from '@/Components/Menu/menu';
 
 const props = defineProps<{
@@ -11,6 +11,7 @@ const props = defineProps<{
     currentLists: TodoList[];
 }>();
 const { users, currentUser, currentLists } = toRefs(props);
+watchEffect(() => (allLists.value = currentLists.value));
 allLists.value = currentLists.value;
 </script>
 
