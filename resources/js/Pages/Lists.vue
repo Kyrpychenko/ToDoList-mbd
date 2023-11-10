@@ -5,7 +5,7 @@ import { TodoList, User } from '@/types';
 import { toRefs, watchEffect } from 'vue';
 import { displayedTodos, allLists } from '@/Components/Menu/menu';
 import NavLink from '@/Components/Defaults/NavLink.vue';
-
+import Menu from '@/Components/Menu/Menu.vue';
 const props = defineProps<{
     users: User[];
     currentUser: User;
@@ -18,6 +18,7 @@ allLists.value = currentLists.value;
 
 <template>
     <AuthenticatedLayout>
+        <Menu />
         <ShowTodo
             v-for="todo of displayedTodos.filter(e => e.todo_item_user.find(e => e.id == currentUser.id))"
             :todo="todo"

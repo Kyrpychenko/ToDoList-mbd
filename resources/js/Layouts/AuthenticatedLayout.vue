@@ -51,7 +51,7 @@ import { Link } from '@inertiajs/vue3';
                             >
                                 <i class="bi bi-person-circle" style="font-size: 1.5rem"></i>
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="z-index: 9999">
                                 <li>
                                     <DropdownLink :href="route('profile.edit')" class="dropdown-item">
                                         <b>
