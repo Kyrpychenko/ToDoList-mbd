@@ -4,6 +4,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { TodoList, User } from '@/types';
 import { toRefs, watchEffect } from 'vue';
 import { displayedTodos, allLists } from '@/Components/Menu/menu';
+import NavLink from '@/Components/Defaults/NavLink.vue';
 
 const props = defineProps<{
     users: User[];
@@ -26,6 +27,15 @@ allLists.value = currentLists.value;
             class="my-3"
             style="max-height: max-content"
         />
+        <template v-if="!displayedTodos.length">
+            <div class="text-center mt-5">
+                <h4>Alle Aufgaben sind erledigt, {{ currentUser.name.slice(0, 1).toLocaleUpperCase() + currentUser.name.slice(1) }}!</h4>
+                <NavLink :href="route('Dashboard')" :active="route().current('dashboard')" class="text-decoration-none text-dark">
+                    <i>Finde oder erstelle Aufgaben hier.</i>
+                </NavLink>
+            </div>
+        </template>
     </AuthenticatedLayout>
 </template>
+
 <style scoped lang="scss"></style>
