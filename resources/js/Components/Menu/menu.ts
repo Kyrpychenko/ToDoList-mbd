@@ -29,7 +29,9 @@ export const displayedLists = computed(() => {
         }))
         .map(e => ({
             ...e,
-            todo_items: e.todo_items.filter(t => t.title.includes(searchValue.value) || t.description.includes(searchValue.value)),
+            todo_items: e.todo_items.filter(
+                t => t.title.toLowerCase().includes(searchValue.value) || t.description.toLowerCase().includes(searchValue.value)
+            ),
         }))
         .filter(l => l.todo_items.length !== 0)
         .map(e => ({
@@ -37,7 +39,6 @@ export const displayedLists = computed(() => {
             todo_items: e.todo_items.sort((a, b) => sortFunction(a, b)),
         }));
 });
-console.log({ displayedLists: displayedLists.value });
 
 export const displayedTodos = computed(() =>
     allLists.value
@@ -55,11 +56,4 @@ export const displayedTodos = computed(() =>
 
 function sortFunction(a: TodoItem, b: TodoItem) {
     return sortOptions.value === 'deadline' ? (a.deadline < b.deadline ? 1 : -1) : sortOptions.value === 'priority' ? b.priority - a.priority : 0;
-}
-
-export function search(searchValue: string) {
-    allLists.value.map(e => ({
-        ...e,
-        todo_items: e.todo_items.filter(t => t.title.includes(searchValue) || t.description.includes(searchValue)),
-    }));
 }
