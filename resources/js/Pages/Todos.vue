@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Button, Message, Modal, TextInput, SelectInput } from 'custom-mbd-components';
-import { Head, router } from '@inertiajs/vue3';
+import { Modal, TextInput, SelectInput } from 'custom-mbd-components';
+import { Head } from '@inertiajs/vue3';
 import { ref, toRefs } from 'vue';
 import { User } from '@/types';
 
