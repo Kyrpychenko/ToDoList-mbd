@@ -21,6 +21,7 @@ allLists.value = currentLists.value;
             :todo="todo"
             :users="users"
             :current-user="currentUser"
+            :key="todo.id"
             class="my-3"
             style="max-height: max-content"
         />

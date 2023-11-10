@@ -18,12 +18,13 @@ export const displayedLists = computed(() => {
     return allLists.value
         .map(e => ({
             ...e,
-            todo_items: e.todo_items.filter(t =>
-                filterOptions.value === 'finished' || filterOptions.value === 'unfinished'
-                    ? t.state === filterOptions.value
-                    : filterOptions.value === 'createdBy'
-                    ? t.user_id === currentUser.value?.id
-                    : t
+            todo_items: e.todo_items.filter(
+                t =>
+                    filterOptions.value === 'finished' || filterOptions.value === 'unfinished' // besser schreiben
+                        ? t.state === filterOptions.value
+                        : filterOptions.value === 'createdBy'
+                        ? t.user_id === currentUser.value?.id
+                        : t // ???
             ),
         }))
         .map(e => ({
@@ -40,7 +41,15 @@ console.log({ displayedLists: displayedLists.value });
 
 export const displayedTodos = computed(() =>
     allLists.value
-        .flatMap(e => e.todo_items.filter(t => filterOptions.value === null || t.state === filterOptions.value))
+        .flatMap(e =>
+            e.todo_items.filter(t =>
+                filterOptions.value === 'finished' || filterOptions.value === 'unfinished' // besser schreiben
+                    ? t.state === filterOptions.value
+                    : filterOptions.value === 'createdBy'
+                    ? t.user_id === currentUser.value?.id
+                    : t
+            )
+        )
         .sort((a, b) => sortFunction(a, b))
 );
 
