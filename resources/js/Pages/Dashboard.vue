@@ -43,6 +43,12 @@ menuUser.value = currentUser.value;
                 </TransitionGroup>
             </div>
         </template>
+        <template v-if="!displayedLists.filter(l => l.todo_items).length">
+            <div class="text-center mt-5">
+                <h4>Alle aufgaben sind erledigt, {{ currentUser.name.slice(0, 1).toLocaleUpperCase() + currentUser.name.slice(1) }}!</h4>
+                <p>Genieße den Rest deiner Freizeit.</p>
+            </div>
+        </template>
     </AuthenticatedLayout>
 </template>
 <style scoped>
