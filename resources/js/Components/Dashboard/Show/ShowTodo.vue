@@ -76,25 +76,25 @@ function syncDataTodo() {
         <Modal
             :title="todo.title"
             :affirm="{
-                class: currentUser.id === todo.user_id ? 'btn btn-success ' : 'd-none',
+                class: currentUser.id === todo.user_id || currentUser.role === 'admin' ? 'btn btn-success ' : 'd-none',
                 text: 'Speichern',
-                disabled: !(syncDataTodoForm.title.length >= 5 && syncDataTodoForm.title.length <= 25),
+                disabled: !(syncDataTodoForm.title.length >= 5 && syncDataTodoForm.title.length <= 50),
                 action: () => syncDataTodo(),
             }"
             :negative="{
-                class: currentUser.id === todo.user_id ? 'btn btn-danger' : 'd-none',
+                class: currentUser.id === todo.user_id || currentUser.role === 'admin' ? 'btn btn-danger' : 'd-none',
                 text: 'Löschen',
                 action: () => router.post(route('deleteTodo', todo.id)),
             }"
         >
             <div>
-                <div class="w-50">
+                <div>
                     <div>Todo erstellt von:</div>
                     <div class="ms-3">
                         {{ users.find(u => u.id === todo.user_id)?.name }}
                     </div>
                     <div>
-                        <div v-if="currentUser.id === todo.user_id">
+                        <div v-if="currentUser.id === todo.user_id || currentUser.role === 'admin'">
                             <TextInput placeholder="Titel" v-model="syncDataTodoForm.title" />
                             <div v-if="!(syncDataTodoForm.title.length >= 5 && syncDataTodoForm.title.length <= 50)">
                                 Der Name muss zwischen 5 und 50 zeichen haben.
@@ -102,7 +102,7 @@ function syncDataTodo() {
                         </div>
                     </div>
                     <div>
-                        <div v-if="currentUser.id === todo.user_id">
+                        <div v-if="currentUser.id === todo.user_id || currentUser.role === 'admin'">
                             <TextareaInput placeholder="Beschreibung" v-model="syncDataTodoForm.description" />
                         </div>
                         <div v-else>
@@ -113,7 +113,7 @@ function syncDataTodo() {
                         </div>
                     </div>
                     <div>
-                        <div v-if="currentUser.id === todo.user_id">
+                        <div v-if="currentUser.id === todo.user_id || currentUser.role === 'admin'">
                             <DateInput placeholder="Abgabedatum" v-model="syncDataTodoForm.deadline" />
                         </div>
                         <div v-else>
@@ -144,7 +144,7 @@ function syncDataTodo() {
                     </div>
                     <div class="card-body">
                         <span>
-                            <p class="card-text">{{ todo.description }}</p>
+                            <p class="card-text">{{ todo.description.slice(0, 100) + (todo.description.length > 100 ? '...' : '') }}</p>
                         </span>
                     </div>
                     <div class="card-footer d-flex justify-content-between align-items-center">
