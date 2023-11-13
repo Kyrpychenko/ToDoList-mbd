@@ -3,7 +3,7 @@ import { sortOptions, toggleFilter, toggleSort, searchValue, filterOptions } fro
 import Search from 'custom-mbd-components/src/components/SexyInputs/Search.vue';
 </script>
 <template>
-    <div class="d-flex justify-content-center align-items-center sticky-top">
+    <div class="d-flex justify-content-center align-items-center sticky-top bg-light">
         <div class="d-flex justify-content-between align-items-center w-100">
             <Search v-model="searchValue" :placeholder="'Suche'"></Search>
             <div class="mt-3">
