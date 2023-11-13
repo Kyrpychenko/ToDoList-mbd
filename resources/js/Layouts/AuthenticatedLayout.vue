@@ -28,11 +28,19 @@ import { Link } from '@inertiajs/vue3';
                     <ul class="navbar-nav d-flex w-100">
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="#">
-                                <NavLink :href="route('Dashboard')" :active="route().current('dashboard')" class="text-decoration-none text-light">
-                                    <i style="font-size: 1.5rem" class="bi bi-house-door-fill"></i>
+                                <NavLink :href="route('Dashboard')" :active="route().current('dashboard')" class="text-decoration-none">
+                                    <i
+                                        style="font-size: 1.5rem"
+                                        class="bi bi-house-door-fill"
+                                        :class="route().current('dashboard') ? 'text-light' : 'text-secondary'"
+                                    />
                                 </NavLink>
-                                <NavLink :href="route('lists')" :active="route().current('lists')" class="text-decoration-none text-light">
-                                    <i style="font-size: 1.4rem" class="bi bi-clipboard"></i>
+                                <NavLink :href="route('lists')" :active="route().current('lists')" class="text-decoration-none">
+                                    <i
+                                        style="font-size: 1.5rem"
+                                        class="bi bi-clipboard"
+                                        :class="route().current('lists') ? 'text-light' : 'text-secondary'"
+                                    />
                                 </NavLink>
                             </a>
                         </li>

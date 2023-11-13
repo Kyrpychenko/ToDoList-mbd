@@ -4,7 +4,6 @@ import { TodoItem, User } from '@/types';
 import { router, useForm } from '@inertiajs/vue3';
 import { toRefs } from 'vue';
 
-
 const props = defineProps<{
     users: User[];
     todo: TodoItem;
