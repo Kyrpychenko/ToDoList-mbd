@@ -19,15 +19,17 @@ allLists.value = currentLists.value;
 <template>
     <AuthenticatedLayout>
         <Menu />
-        <ShowTodo
-            v-for="todo of displayedTodos.filter(e => e.todo_item_user.find(e => e.id == currentUser.id))"
-            :todo="todo"
-            :users="users"
-            :current-user="currentUser"
-            :key="todo.id"
-            class="my-3"
-            style="max-height: max-content"
-        />
+        <TransitionGroup name="todo">
+            <ShowTodo
+                v-for="todo of displayedTodos.filter(e => e.todo_item_user.find(e => e.id == currentUser.id))"
+                :todo="todo"
+                :users="users"
+                :current-user="currentUser"
+                :key="todo.id"
+                class="my-3"
+                style="max-height: max-content"
+            />
+        </TransitionGroup>
         <template v-if="!displayedTodos.length">
             <div class="text-center mt-5">
                 <h4>Alle Aufgaben sind erledigt, {{ currentUser.name.slice(0, 1).toLocaleUpperCase() + currentUser.name.slice(1) }}!</h4>
@@ -39,4 +41,19 @@ allLists.value = currentLists.value;
     </AuthenticatedLayout>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.todo-move,
+.todo-enter-active,
+.todo-leave-active {
+    transition: all 0.1s ease;
+}
+
+.todo-enter-from,
+.todo-leave-to {
+    opacity: 0;
+}
+
+.todo-leave-active .todo-enter-active {
+    position: relative;
+}
+</style>

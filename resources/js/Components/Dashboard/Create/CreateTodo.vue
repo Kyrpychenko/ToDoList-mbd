@@ -67,7 +67,7 @@ const todoForm = useForm<{
     >
         <!-- <form @submit="preve"></form> -->
         <TextInput placeholder="Titel" v-model="todoForm.title" required />
-        <div v-if="!(todoForm.title.length >= 5 && todoForm.title.length <= 50)">Der Name muss zwischen 5 und 50 zeichen haben.</div>
+        <div v-if="!(todoForm.title.length >= 5 && todoForm.title.length <= 50)">Der Name muss zwischen 5 und 50 Zeichen haben.</div>
         <TextareaInput placeholder="Beschreibung" v-model="todoForm.description" />
         <div class="mt-2">Priorität:</div>
         <RadioGroup
